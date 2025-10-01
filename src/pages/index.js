@@ -1,115 +1,131 @@
-import Image from "next/image";
-import { Geist, Geist_Mono } from "next/font/google";
+import Layout from "@/components/Layout";
+import Link from "next/link";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+const features = [
+  {
+    title: "Centralized Tracking",
+    description: "Submit and monitor grievances across departments with real-time status updates.",
+  },
+  {
+    title: "Role-based Access",
+    description: "Students, staff, and administrators collaborate securely within a unified workspace.",
+  },
+  {
+    title: "Analytics & Insights",
+    description: "Identify bottlenecks, track resolution timelines, and ensure accountability.",
+  },
+];
 
 export default function Home() {
   return (
-    <div
-      className={`${geistSans.className} ${geistMono.className} font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20`}
-    >
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              src/pages/index.js
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+    <Layout>
+      <section className="rounded-3xl bg-gradient-to-r from-indigo-600 to-blue-600 px-8 py-16 text-white shadow-lg">
+        <div className="grid gap-10 lg:grid-cols-2 lg:items-center">
+          <div className="space-y-6">
+            <span className="rounded-full bg-white/20 px-4 py-1 text-sm font-semibold uppercase tracking-wide">
+              Institute Grievance Portal
+            </span>
+            <h1 className="text-4xl font-bold tracking-tight sm:text-5xl">
+              Empowering Students and Staff with Transparent Resolution Workflows
+            </h1>
+            <p className="text-lg text-indigo-100">
+              Submit grievances, collaborate with committees, and track resolutions from submission to closure—all in one secure portal.
+            </p>
+            <div className="flex flex-col gap-3 sm:flex-row">
+              <Link
+                href="/dashboard/submit"
+                className="rounded-md bg-white px-6 py-3 text-center text-sm font-semibold text-indigo-600 shadow-lg shadow-indigo-800/30 transition hover:bg-indigo-50"
+              >
+                Submit a Grievance
+              </Link>
+              <Link
+                href="/login"
+                className="rounded-md border border-white/60 px-6 py-3 text-center text-sm font-semibold text-white transition hover:bg-white/15"
+              >
+                Login to Dashboard
+              </Link>
+            </div>
+          </div>
+          <div className="grid gap-4">
+            <div className="rounded-xl bg-white/15 p-6 backdrop-blur-lg">
+              <h3 className="text-lg font-semibold text-white">Live Status Timeline</h3>
+              <p className="mt-2 text-sm text-indigo-100">
+                Stay informed with automatic notifications at every stage from submission to resolution.
+              </p>
+              <div className="mt-4 space-y-3">
+                {["Submitted", "In Review", "In Progress", "Resolved"].map((stage, idx) => (
+                  <div key={stage} className="flex items-center gap-3">
+                    <span className="flex h-8 w-8 items-center justify-center rounded-full bg-white/20 text-sm font-semibold">
+                      {idx + 1}
+                    </span>
+                    <div>
+                      <p className="font-semibold text-white">{stage}</p>
+                      <p className="text-xs text-indigo-100">Automated reminders ensure timely action.</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+      </section>
+
+      <section className="mt-16 grid gap-6 md:grid-cols-3">
+        {features.map((feature) => (
+          <div
+            key={feature.title}
+            className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-lg"
+          >
+            <h3 className="text-lg font-semibold text-slate-900">{feature.title}</h3>
+            <p className="mt-3 text-sm text-slate-600">{feature.description}</p>
+          </div>
+        ))}
+      </section>
+
+      <section className="mt-20 rounded-3xl bg-white p-10 shadow-xl">
+        <div className="grid gap-12 lg:grid-cols-2 lg:items-center">
+          <div>
+            <h2 className="text-3xl font-bold text-slate-900">A collaborative workspace for grievance cells</h2>
+            <p className="mt-4 text-base text-slate-600">
+              Administrators can triage issues, assign them to specialized committees, and escalate when needed. Students and staff enjoy clarity and transparency throughout the resolution lifecycle.
+            </p>
+            <dl className="mt-6 space-y-4">
+              <div className="rounded-lg border border-slate-200 bg-slate-50 p-4">
+                <dt className="text-sm font-semibold text-indigo-600">Anonymous Submissions</dt>
+                <dd className="mt-2 text-sm text-slate-600">Protect identities while ensuring grievances reach the right teams.</dd>
+              </div>
+              <div className="rounded-lg border border-slate-200 bg-slate-50 p-4">
+                <dt className="text-sm font-semibold text-indigo-600">Resolution Feedback</dt>
+                <dd className="mt-2 text-sm text-slate-600">Rate resolutions and add comments to drive service improvements.</dd>
+              </div>
+              <div className="rounded-lg border border-slate-200 bg-slate-50 p-4">
+                <dt className="text-sm font-semibold text-indigo-600">Data-backed Insights</dt>
+                <dd className="mt-2 text-sm text-slate-600">Understand trending categories, SLA adherence, and escalation patterns.</dd>
+              </div>
+            </dl>
+          </div>
+          <div className="space-y-6">
+            <div className="rounded-xl border border-dashed border-indigo-200 bg-indigo-50/60 p-6 text-indigo-700">
+              <h3 className="text-base font-semibold">Need elevated oversight?</h3>
+              <p className="mt-2 text-sm">
+                Enable multi-level escalation workflows to ensure unresolved grievances quickly reach senior authorities.
+              </p>
+            </div>
+            <div className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+              <h3 className="text-base font-semibold text-slate-900">Ready to streamline grievance handling?</h3>
+              <p className="mt-3 text-sm text-slate-600">
+                Create accounts for committee members, configure departmental assignments, and start managing grievances with accountability and empathy.
+              </p>
+              <Link
+                href="/register"
+                className="mt-4 inline-flex items-center justify-center rounded-md bg-indigo-600 px-5 py-2 text-sm font-semibold text-white transition hover:bg-indigo-500"
+              >
+                Get Started
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+    </Layout>
   );
 }
