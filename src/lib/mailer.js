@@ -2,15 +2,20 @@ import nodemailer from "nodemailer";
 
 const requiredEnv = ["SMTP_HOST", "SMTP_PORT", "SMTP_USER", "SMTP_PASS", "SMTP_FROM"];
 
-const checkConfig = () => {
-  const missing = requiredEnv.filter((key) => !process.env[key]);
-  if (missing.length) {
-    throw new Error(`Missing SMTP configuration values: ${missing.join(", ")}`);
-  }
-};
+const missingConfig = () => requiredEnv.filter((key) => !process.env[key]);
 
 const createTransporter = () => {
-  checkConfig();
+  const missing = missingConfig();
+
+  if (missing.length) {
+    const message = `Missing SMTP configuration values: ${missing.join(", ")}`;
+    if (process.env.NODE_ENV === "production") {
+      throw new Error(message);
+    }
+    console.warn(`[mailer] ${message}. Email delivery disabled in this environment.`);
+    return null;
+  }
+
   return nodemailer.createTransport({
     host: process.env.SMTP_HOST,
     port: Number(process.env.SMTP_PORT) || 587,
@@ -33,8 +38,13 @@ export const sendNotificationEmail = async ({
     console.warn("sendNotificationEmail called without recipient or message");
     return;
   }
-
   const transporter = getTransporter();
+  if (!transporter) {
+    console.info(
+      `[mailer] Skipping notification email to ${to}. Message: ${message.slice(0, 120) || "(empty)"}`
+    );
+    return;
+  }
   const greetingName = displayName || "there";
   const bodyLines = [
     `Hello ${greetingName},`,
@@ -91,6 +101,13 @@ export const sendRegistrationOtpEmail = async ({ to, displayName, otp, expiresAt
       ? `${signInUrl}login`
       : `${signInUrl}/login`
     : null;
+
+  if (!transporter) {
+    console.info(
+      `[mailer] OTP for ${to} (${displayName || "unknown"}) is ${otp}. Email delivery disabled in this environment.`
+    );
+    return;
+  }
 
   await transporter.sendMail({
     from: process.env.SMTP_FROM,
