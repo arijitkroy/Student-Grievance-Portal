@@ -49,16 +49,20 @@ const DashboardPage = () => {
           status: filters.status,
           category: filters.category,
           assignedTo: filters.assignedTo || undefined,
+          includeAnonymous: user?.role === "admin" ? "true" : undefined,
         });
 
-        const [grievancesRes, statsRes] = await Promise.all([
-          apiFetch(`/api/grievances${query}`),
-          apiFetch(`/api/grievances/stats`),
-        ]);
+        const statsPromise = apiFetch(`/api/grievances/stats`);
+        const grievancesRes = await apiFetch(`/api/grievances${query}`);
 
         if (!isActive()) return;
 
         setGrievances(grievancesRes.grievances || []);
+
+        const statsRes = await statsPromise;
+
+        if (!isActive()) return;
+
         setStats(statsRes.stats || null);
       } catch (err) {
         if (!isActive()) return;

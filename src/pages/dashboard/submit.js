@@ -161,21 +161,6 @@ const SubmitGrievancePage = () => {
             </div>
           </div>
         )}
-
-        <section className="rounded-3xl border border-white/10 bg-white/5 p-6 shadow-[0_0_2.5rem_rgba(168,85,247,0.2)] backdrop-blur">
-          <h2 className="text-lg font-semibold text-white drop-shadow-[0_0_1.25rem_rgba(255,123,51,0.3)]">
-            Submission guidelines
-          </h2>
-          <ul className="mt-4 space-y-3 text-sm text-[#f1deff]/80">
-            <li>Provide a clear and concise title summarizing the issue.</li>
-            <li>Include relevant dates, locations, and parties involved in the description.</li>
-            <li>Upload supporting documents such as images, letters, or receipts if applicable.</li>
-            <li>
-              For sensitive matters, enable anonymous submission. You&apos;ll receive a tracking code for
-              future reference.
-            </li>
-          </ul>
-        </section>
       </div>
     </Layout>
   );
