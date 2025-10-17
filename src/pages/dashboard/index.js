@@ -74,13 +74,15 @@ const DashboardPage = () => {
   return (
     <Layout>
       <Head>
-        <title>Dashboard | Grievance Portal</title>
+        <title>Dashboard | LastCryy</title>
       </Head>
       <div className="flex flex-col gap-8">
-        <header className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+        <header className="flex flex-col gap-4 rounded-3xl border border-white/10 bg-white/5 p-6 shadow-[0_0_3rem_rgba(255,123,51,0.2)] backdrop-blur md:flex-row md:items-center md:justify-between">
           <div>
-            <h1 className="text-3xl font-semibold text-slate-900">Dashboard</h1>
-            <p className="mt-1 text-sm text-slate-600">
+            <h1 className="text-3xl font-semibold text-white drop-shadow-[0_0_1.5rem_rgba(255,123,51,0.35)]">
+              Dashboard
+            </h1>
+            <p className="mt-1 text-sm text-[#f1deff]/80">
               View grievance activity, track progress, and stay updated on resolutions.
             </p>
           </div>
@@ -88,7 +90,7 @@ const DashboardPage = () => {
             <button
               type="button"
               onClick={loadData}
-              className="rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-indigo-500 disabled:cursor-not-allowed disabled:bg-indigo-300"
+              className="rounded-full border border-[var(--accent-primary)] bg-[var(--accent-primary)] px-4 py-2 text-sm font-semibold text-[#1a0b27] shadow-[0_0_2rem_rgba(255,123,51,0.35)] transition hover:-translate-y-1 hover:bg-[#ff965f] disabled:cursor-not-allowed disabled:border-[#6c3924] disabled:bg-[#6c3924] disabled:text-[#2e0f1f]"
               disabled={loading}
             >
               Refresh
@@ -97,7 +99,7 @@ const DashboardPage = () => {
         </header>
 
         {error && (
-          <div className="rounded-xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-600">
+          <div className="rounded-xl border border-rose-400/40 bg-[rgba(244,63,94,0.1)] px-4 py-3 text-sm text-rose-200 shadow-[0_0_2rem_rgba(244,63,94,0.25)]">
             {error}
           </div>
         )}
@@ -106,11 +108,13 @@ const DashboardPage = () => {
 
         <section className="grid gap-6 lg:grid-cols-[2fr_1fr]">
           <div className="space-y-6">
-            <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+            <div className="rounded-3xl border border-white/10 bg-white/5 p-5 shadow-[0_0_2.5rem_rgba(168,85,247,0.2)] backdrop-blur">
               <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
                 <div className="space-y-1">
-                  <h2 className="text-lg font-semibold text-slate-900">Your Grievances</h2>
-                  <p className="text-sm text-slate-600">
+                  <h2 className="text-lg font-semibold text-white drop-shadow-[0_0_1.25rem_rgba(255,123,51,0.3)]">
+                    Your Grievances
+                  </h2>
+                  <p className="text-sm text-[#f1deff]/75">
                     Filter by status or category to narrow down your grievances.
                   </p>
                 </div>
@@ -119,7 +123,7 @@ const DashboardPage = () => {
                     name="status"
                     value={filters.status}
                     onChange={handleFilterChange}
-                    className="rounded-md border border-slate-200 bg-white px-3 py-2 text-sm shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/40"
+                    className="rounded-xl border border-white/10 bg-[#11051b] px-3 py-2 text-sm text-[#f7e8ff] shadow-[0_0_1.5rem_rgba(168,85,247,0.15)] focus:border-[var(--accent-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--accent-primary)]/40"
                   >
                     {filterOptions.statuses.map((option) => (
                       <option key={option.value} value={option.value}>
@@ -131,7 +135,7 @@ const DashboardPage = () => {
                     name="category"
                     value={filters.category}
                     onChange={handleFilterChange}
-                    className="rounded-md border border-slate-200 bg-white px-3 py-2 text-sm shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/40"
+                    className="rounded-xl border border-white/10 bg-[#11051b] px-3 py-2 text-sm text-[#f7e8ff] shadow-[0_0_1.5rem_rgba(168,85,247,0.15)] focus:border-[var(--accent-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--accent-primary)]/40"
                   >
                     {filterOptions.categories.map((option) => (
                       <option key={option.value} value={option.value}>
@@ -146,14 +150,14 @@ const DashboardPage = () => {
                       value={filters.assignedTo}
                       onChange={handleFilterChange}
                       placeholder="Assigned to"
-                      className="rounded-md border border-slate-200 px-3 py-2 text-sm shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/40"
+                      className="rounded-xl border border-white/10 bg-[#11051b] px-3 py-2 text-sm text-[#f7e8ff] shadow-[0_0_1.5rem_rgba(168,85,247,0.15)] placeholder:text-[#f7e8ff]/40 focus:border-[var(--accent-secondary)] focus:outline-none focus:ring-2 focus:ring-[var(--accent-secondary)]/40"
                     />
                   )}
                 </div>
               </div>
               <div className="mt-6">
                 {loading ? (
-                  <div className="h-32 rounded-xl border border-dashed border-slate-200 bg-slate-50" />
+                  <div className="h-32 rounded-xl border border-dashed border-white/15 bg-white/5" />
                 ) : (
                   <GrievanceList grievances={grievances} />
                 )}

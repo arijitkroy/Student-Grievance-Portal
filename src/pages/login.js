@@ -37,16 +37,16 @@ const LoginPage = () => {
   return (
     <Layout>
       <Head>
-        <title>Login | Grievance Portal</title>
+        <title>Login | LastCryy</title>
       </Head>
-      <div className="mx-auto max-w-md rounded-2xl border border-slate-200 bg-white p-8 shadow-sm">
-        <h1 className="text-2xl font-semibold text-slate-900">Welcome back</h1>
-        <p className="mt-2 text-sm text-slate-600">
+      <div className="mx-auto max-w-md rounded-3xl border border-white/10 bg-white/5 p-8 shadow-[0_0_3rem_rgba(255,123,51,0.2)] backdrop-blur">
+        <h1 className="text-2xl font-semibold text-white drop-shadow-[0_0_1.5rem_rgba(255,123,51,0.35)]">Welcome back</h1>
+        <p className="mt-2 text-sm text-[#f1deff]/80">
           Access your dashboard to track grievances and receive updates.
         </p>
         <form className="mt-6 space-y-5" onSubmit={handleSubmit}>
           <div className="flex flex-col gap-2">
-            <label htmlFor="email" className="text-sm font-medium text-slate-700">
+            <label htmlFor="email" className="text-sm font-medium text-[#f1deff]">
               Email address
             </label>
             <input
@@ -56,12 +56,12 @@ const LoginPage = () => {
               value={form.email}
               onChange={handleChange}
               required
-              className="rounded-md border border-slate-200 px-3 py-2 text-sm shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/40"
+              className="rounded-xl border border-white/10 bg-[#11051b] px-3 py-2 text-sm text-[#f7e8ff] shadow-[0_0_1.5rem_rgba(168,85,247,0.15)] placeholder:text-[#f7e8ff]/40 focus:border-[var(--accent-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--accent-primary)]/40"
               placeholder="you@example.com"
             />
           </div>
           <div className="flex flex-col gap-2">
-            <label htmlFor="password" className="text-sm font-medium text-slate-700">
+            <label htmlFor="password" className="text-sm font-medium text-[#f1deff]">
               Password
             </label>
             <input
@@ -71,23 +71,23 @@ const LoginPage = () => {
               value={form.password}
               onChange={handleChange}
               required
-              className="rounded-md border border-slate-200 px-3 py-2 text-sm shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/40"
+              className="rounded-xl border border-white/10 bg-[#11051b] px-3 py-2 text-sm text-[#f7e8ff] shadow-[0_0_1.5rem_rgba(168,85,247,0.15)] placeholder:text-[#f7e8ff]/40 focus:border-[var(--accent-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--accent-primary)]/40"
               placeholder="••••••••"
             />
           </div>
-          {error && <p className="text-sm text-rose-500">{error}</p>}
+          {error && <p className="text-sm text-rose-400">{error}</p>}
           <button
             type="submit"
             disabled={submitting}
-            className="w-full rounded-md bg-indigo-600 px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-indigo-500 disabled:cursor-not-allowed disabled:bg-indigo-300"
+            className="w-full rounded-full bg-[var(--accent-primary)] px-4 py-2 text-sm font-semibold text-[#1a0b27] shadow-[0_0_2rem_rgba(255,123,51,0.35)] transition hover:-translate-y-1 hover:bg-[#ff965f] disabled:cursor-not-allowed disabled:bg-[#6c3924]"
           >
             {submitting ? "Signing in..." : "Sign in"}
           </button>
         </form>
-        <p className="mt-6 text-sm text-slate-600">
+        <p className="mt-6 text-sm text-[#f1deff]/80">
           Don&apos;t have an account?
           <span className="ml-1">
-            <a href="/register" className="font-semibold text-indigo-600 hover:text-indigo-500">
+            <a href="/register" className="font-semibold text-[var(--accent-secondary)] hover:text-[#c084fc]">
               Register now
             </a>
           </span>

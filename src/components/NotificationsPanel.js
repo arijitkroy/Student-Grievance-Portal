@@ -13,24 +13,24 @@ const NotificationsPanel = ({ notifications = [], onMarkAllRead, loading = false
   const hasNotifications = notifications.length > 0;
 
   return (
-    <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
+    <div className="rounded-3xl border border-white/10 bg-white/5 p-4 shadow-[0_0_2.5rem_rgba(168,85,247,0.2)] backdrop-blur">
       <div className="flex items-center justify-between">
-        <h2 className="text-lg font-semibold text-slate-900">Notifications</h2>
+        <h2 className="text-lg font-semibold text-white drop-shadow-[0_0_1rem_rgba(255,123,51,0.3)]">Notifications</h2>
         <button
           type="button"
           onClick={onMarkAllRead}
           disabled={!hasNotifications || loading}
-          className="text-sm font-medium text-indigo-600 hover:text-indigo-500 disabled:text-slate-400"
+          className="text-sm font-medium text-[var(--accent-secondary)] transition hover:text-[#c084fc] disabled:text-[#f1deff]/40"
         >
           Mark all as read
         </button>
       </div>
       <ul className="mt-4 space-y-3">
         {loading && (
-          <li className="h-12 animate-pulse rounded-lg bg-slate-100" />
+          <li className="h-12 animate-pulse rounded-lg border border-white/10 bg-white/10" />
         )}
         {!hasNotifications && (
-          <li className="rounded-lg bg-slate-50 px-4 py-3 text-sm text-slate-500">
+          <li className="rounded-lg border border-white/10 bg-white/5 px-4 py-3 text-sm text-[#f1deff]/70">
             You&apos;re all caught up.
           </li>
         )}
@@ -38,11 +38,13 @@ const NotificationsPanel = ({ notifications = [], onMarkAllRead, loading = false
           <li
             key={notification.id}
             className={`rounded-lg px-4 py-3 text-sm ${
-              notification.read ? "bg-white text-slate-600" : "bg-indigo-50 text-indigo-700"
+              notification.read
+                ? "border border-white/10 bg-white/5 text-[#f1deff]/75"
+                : "border border-[var(--accent-primary)]/40 bg-[rgba(255,123,51,0.16)] text-[var(--accent-primary)] shadow-[0_0_1.5rem_rgba(255,123,51,0.25)]"
             }`}
           >
             <p className="font-medium">{notification.message}</p>
-            <p className="text-xs text-slate-400">
+            <p className="text-xs text-[#f1deff]/60">
               {formatDate(notification.createdAt)}
             </p>
           </li>

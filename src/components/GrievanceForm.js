@@ -63,12 +63,12 @@ const GrievanceForm = ({
     <form onSubmit={handleSubmit} className="space-y-6">
       <div className="grid gap-5 sm:grid-cols-2">
         <div className="flex flex-col gap-2">
-          <label className="text-sm font-medium text-slate-700">Category</label>
+          <label className="text-sm font-medium text-[#f1deff]">Category</label>
           <select
             name="category"
             value={form.category}
             onChange={handleChange}
-            className="rounded-md border border-slate-200 bg-white px-3 py-2 text-sm shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/40"
+            className="rounded-xl border border-[rgba(163,255,109,0.4)] bg-[#11051b] px-3 py-2 text-sm text-[#f7e8ff] shadow-[0_0_1.5rem_rgba(126,255,95,0.35)] focus:border-[rgba(163,255,109,0.8)] focus:outline-none focus:ring-2 focus:ring-[rgba(126,255,95,0.55)]"
           >
             {GRIEVANCE_CATEGORIES.map((category) => (
               <option key={category} value={category}>
@@ -79,83 +79,83 @@ const GrievanceForm = ({
         </div>
         {showAssignmentField && (
           <div className="flex flex-col gap-2">
-            <label className="text-sm font-medium text-slate-700">Assign to (optional)</label>
+            <label className="text-sm font-medium text-[#f1deff]">Assign to (optional)</label>
             <input
               type="text"
               name="assignedTo"
               value={form.assignedTo}
               onChange={handleChange}
               placeholder="Department / Committee"
-              className="rounded-md border border-slate-200 px-3 py-2 text-sm shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/40"
+              className="rounded-xl border border-[rgba(163,255,109,0.4)] bg-[#11051b] px-3 py-2 text-sm text-[#f7e8ff] shadow-[0_0_1.5rem_rgba(126,255,95,0.35)] placeholder:text-[#f7e8ff]/40 focus:border-[rgba(163,255,109,0.8)] focus:outline-none focus:ring-2 focus:ring-[rgba(126,255,95,0.55)]"
             />
           </div>
         )}
       </div>
       <div className="flex flex-col gap-2">
-        <label className="text-sm font-medium text-slate-700">Title</label>
+        <label className="text-sm font-medium text-[#f1deff]">Title</label>
         <input
           type="text"
           name="title"
           value={form.title}
           onChange={handleChange}
           placeholder="Summarize your grievance"
-          className={`rounded-md border px-3 py-2 text-sm shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/40 ${
-            titleError ? "border-rose-400" : "border-slate-200"
+          className={`rounded-xl border px-3 py-2 text-sm text-[#f7e8ff] shadow-[0_0_1.5rem_rgba(126,255,95,0.35)] focus:border-[rgba(163,255,109,0.8)] focus:outline-none focus:ring-2 focus:ring-[rgba(126,255,95,0.55)] ${
+            titleError ? "border-rose-400/60 bg-[rgba(244,63,94,0.12)]" : "border-[rgba(163,255,109,0.4)] bg-[#11051b]"
           }`}
         />
-        {titleError && <p className="text-xs text-rose-500">Title is required.</p>}
+        {titleError && <p className="text-xs text-rose-300">Title is required.</p>}
       </div>
       <div className="flex flex-col gap-2">
-        <label className="text-sm font-medium text-slate-700">Description</label>
+        <label className="text-sm font-medium text-[#f1deff]">Description</label>
         <textarea
           name="description"
           value={form.description}
           onChange={handleChange}
           rows={6}
           placeholder="Provide detailed information about your grievance"
-          className={`rounded-md border px-3 py-2 text-sm shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/40 ${
-            descriptionError ? "border-rose-400" : "border-slate-200"
+          className={`rounded-xl border px-3 py-2 text-sm text-[#f7e8ff] shadow-[0_0_1.5rem_rgba(126,255,95,0.35)] focus:border-[rgba(163,255,109,0.8)] focus:outline-none focus:ring-2 focus:ring-[rgba(126,255,95,0.55)] ${
+            descriptionError ? "border-rose-400/60 bg-[rgba(244,63,94,0.12)]" : "border-[rgba(163,255,109,0.4)] bg-[#11051b]"
           }`}
         />
-        {descriptionError && <p className="text-xs text-rose-500">Description is required.</p>}
+        {descriptionError && <p className="text-xs text-rose-300">Description is required.</p>}
       </div>
       {showInitialComment && (
         <div className="flex flex-col gap-2">
-          <label className="text-sm font-medium text-slate-700">Additional notes (optional)</label>
+          <label className="text-sm font-medium text-[#f1deff]">Additional notes (optional)</label>
           <textarea
             name="initialComment"
             value={form.initialComment}
             onChange={handleChange}
             rows={4}
             placeholder="Add any additional context or comments for administrators"
-            className="rounded-md border border-slate-200 px-3 py-2 text-sm shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/40"
+            className="rounded-xl border border-[rgba(163,255,109,0.4)] bg-[#11051b] px-3 py-2 text-sm text-[#f7e8ff] shadow-[0_0_1.5rem_rgba(126,255,95,0.35)] placeholder:text-[#f7e8ff]/40 focus:border-[rgba(163,255,109,0.8)] focus:outline-none focus:ring-2 focus:ring-[rgba(126,255,95,0.55)]"
           />
         </div>
       )}
       <div className="flex flex-col gap-2">
-        <label className="text-sm font-medium text-slate-700">Attachments</label>
+        <label className="text-sm font-medium text-[#f1deff]">Attachments</label>
         <input
           type="file"
           multiple
           onChange={handleFileChange}
-          className="rounded-md border border-slate-200 bg-white px-3 py-2 text-sm shadow-sm"
+          className="rounded-xl border border-[rgba(163,255,109,0.4)] bg-[#11051b] px-3 py-2 text-sm text-[#f7e8ff] shadow-[0_0_1.5rem_rgba(126,255,95,0.35)] file:mr-3 file:rounded-full file:border-0 file:bg-[var(--accent-secondary)] file:px-4 file:py-1.5 file:text-xs file:font-semibold file:text-white file:shadow-[0_0_1rem_rgba(168,85,247,0.4)] hover:border-[rgba(163,255,109,0.8)]"
         />
-        <p className="text-xs text-slate-500">Upload supporting images or documents. Allowed formats: PDF, PNG, JPG.</p>
+        <p className="text-xs text-[#f1deff]/60">Upload supporting images or documents. Allowed formats: PDF, PNG, JPG.</p>
       </div>
       {allowAnonymous && (
-        <label className="flex items-center gap-3 rounded-xl border border-slate-200 bg-slate-50/60 px-4 py-3 text-sm text-slate-700">
+        <label className="flex items-center gap-3 rounded-xl border border-white/10 bg-white/10 px-4 py-3 text-sm text-[#f1deff] shadow-[0_0_1.5rem_rgba(168,85,247,0.2)]">
           <input
             type="checkbox"
             name="anonymous"
             checked={form.anonymous}
             onChange={handleChange}
-            className="h-4 w-4 rounded border-slate-300 text-indigo-600 focus:ring-indigo-500"
+            className="h-4 w-4 rounded border-white/30 bg-[#11051b] text-[var(--accent-primary)] focus:ring-[var(--accent-primary)]"
           />
           Submit anonymously (tracking code will be generated for status checks)
         </label>
       )}
       {error && (
-        <div className="rounded-md border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-600">
+        <div className="rounded-md border border-rose-400/40 bg-[rgba(244,63,94,0.12)] px-4 py-3 text-sm text-rose-200 shadow-[0_0_2rem_rgba(244,63,94,0.25)]">
           {error}
         </div>
       )}
@@ -163,7 +163,7 @@ const GrievanceForm = ({
         <button
           type="submit"
           disabled={submitting}
-          className="inline-flex items-center rounded-md bg-indigo-600 px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-indigo-500 disabled:cursor-not-allowed disabled:bg-indigo-300"
+          className="inline-flex items-center rounded-full border border-[var(--accent-primary)] bg-[var(--accent-primary)] px-4 py-2 text-sm font-semibold text-[#1a0b27] shadow-[0_0_2rem_rgba(255,123,51,0.35)] transition hover:-translate-y-1 hover:bg-[#ff965f] disabled:cursor-not-allowed disabled:border-[#6c3924] disabled:bg-[#6c3924] disabled:text-[#2e0f1f]"
         >
           {submitting ? "Submitting..." : "Submit Grievance"}
         </button>

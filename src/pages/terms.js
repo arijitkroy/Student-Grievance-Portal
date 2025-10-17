@@ -4,7 +4,7 @@ import Layout from "@/components/Layout";
 const sections = [
   {
     title: "Acceptance of Terms",
-    body: "By accessing or using the Institute Grievance Portal you agree to comply with these Terms of Use and all applicable institute policies. If you do not agree, do not use the service.",
+    body: "By accessing or using the LastCryy platform you agree to comply with these Terms of Use and all applicable institute policies. If you do not agree, do not use the service.",
   },
   {
     title: "Account Responsibilities",
@@ -36,13 +36,13 @@ const TermsPage = () => {
   return (
     <Layout>
       <Head>
-        <title>Terms of Use | Grievance Portal</title>
+        <title>Terms of Use | LastCryy</title>
       </Head>
       <div className="mx-auto max-w-3xl space-y-6">
         <header className="space-y-2">
           <h1 className="text-3xl font-semibold text-slate-900">Terms of Use</h1>
           <p className="text-sm text-slate-600">
-            These Terms govern access to and use of the Institute Grievance Portal by students, staff, and
+            These Terms govern access to and use of the LastCryy platform by students, staff, and
             administrators.
           </p>
         </header>

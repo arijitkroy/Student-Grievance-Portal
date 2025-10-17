@@ -1,14 +1,14 @@
 const Card = ({ title, value, subtitle, highlight = false }) => (
   <div
-    className={`rounded-2xl border px-5 py-6 shadow-sm transition hover:-translate-y-1 hover:shadow-md ${
+    className={`rounded-2xl border px-5 py-6 shadow-[0_0_2.5rem_rgba(168,85,247,0.2)] transition duration-300 hover:-translate-y-1.5 hover:shadow-[0_0_3.5rem_rgba(255,123,51,0.3)] ${
       highlight
-        ? "border-indigo-200 bg-indigo-50 text-indigo-700"
-        : "border-slate-200 bg-white text-slate-700"
+        ? "border-[var(--accent-primary)]/40 bg-[rgba(255,123,51,0.14)] text-[var(--accent-primary)]"
+        : "border-white/10 bg-white/5 text-[#f1deff]"
     }`}
   >
-    <p className="text-sm font-medium uppercase tracking-wide text-slate-400">{title}</p>
+    <p className="text-sm font-medium uppercase tracking-wide text-[#f1deff]/60">{title}</p>
     <p className="mt-2 text-3xl font-semibold">{value}</p>
-    {subtitle && <p className="mt-2 text-sm text-slate-500">{subtitle}</p>}
+    {subtitle && <p className="mt-2 text-sm text-[#f1deff]/70">{subtitle}</p>}
   </div>
 );
 

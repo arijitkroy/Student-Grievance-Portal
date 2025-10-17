@@ -68,32 +68,34 @@ const SubmitGrievancePage = () => {
   return (
     <Layout>
       <Head>
-        <title>Submit Grievance | Grievance Portal</title>
+        <title>Submit Grievance | LastCryy</title>
       </Head>
       <div className="mx-auto max-w-3xl space-y-6">
-        <header className="space-y-2">
-          <h1 className="text-3xl font-semibold text-slate-900">Submit a Grievance</h1>
-          <p className="text-sm text-slate-600">
+        <header className="space-y-3 rounded-3xl border border-white/10 bg-white/5 p-6 shadow-[0_0_3rem_rgba(255,123,51,0.2)] backdrop-blur">
+          <h1 className="text-3xl font-semibold text-white drop-shadow-[0_0_1.5rem_rgba(255,123,51,0.35)]">
+            Submit a Grievance
+          </h1>
+          <p className="text-sm text-[#f1deff]/80">
             Share your concern with the institute grievance cell. Provide as much detail as possible to
             help us resolve your issue quickly.
           </p>
         </header>
 
         {successMessage && (
-          <div className="rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-700">
+          <div className="rounded-xl border border-emerald-400/40 bg-[rgba(34,197,94,0.12)] px-4 py-3 text-sm text-emerald-100 shadow-[0_0_2rem_rgba(34,197,94,0.25)]">
             {successMessage}
           </div>
         )}
         {error && (
-          <div className="rounded-xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-600">
+          <div className="rounded-xl border border-rose-400/40 bg-[rgba(244,63,94,0.12)] px-4 py-3 text-sm text-rose-200 shadow-[0_0_2rem_rgba(244,63,94,0.25)]">
             {error}
           </div>
         )}
         {trackingCode && (
-          <div className="rounded-2xl border border-indigo-200 bg-indigo-50 px-5 py-4 text-sm text-indigo-700">
+          <div className="rounded-2xl border border-[var(--accent-secondary)]/40 bg-[rgba(168,85,247,0.18)] px-5 py-4 text-sm text-[var(--accent-secondary)] shadow-[0_0_2rem_rgba(168,85,247,0.3)]">
             <p className="font-semibold">Anonymous tracking code</p>
-            <p className="mt-1 text-base font-mono">{trackingCode}</p>
-            <p className="mt-2 text-xs text-indigo-600">
+            <p className="mt-1 text-base font-mono text-white">{trackingCode}</p>
+            <p className="mt-2 text-xs text-[#f1deff]/80">
               Save this code to check your grievance status later.
             </p>
           </div>
@@ -107,9 +109,11 @@ const SubmitGrievancePage = () => {
           showInitialComment
         />
 
-        <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-          <h2 className="text-lg font-semibold text-slate-900">Submission guidelines</h2>
-          <ul className="mt-4 space-y-3 text-sm text-slate-600">
+        <section className="rounded-3xl border border-white/10 bg-white/5 p-6 shadow-[0_0_2.5rem_rgba(168,85,247,0.2)] backdrop-blur">
+          <h2 className="text-lg font-semibold text-white drop-shadow-[0_0_1.25rem_rgba(255,123,51,0.3)]">
+            Submission guidelines
+          </h2>
+          <ul className="mt-4 space-y-3 text-sm text-[#f1deff]/80">
             <li>Provide a clear and concise title summarizing the issue.</li>
             <li>Include relevant dates, locations, and parties involved in the description.</li>
             <li>Upload supporting documents such as images, letters, or receipts if applicable.</li>
