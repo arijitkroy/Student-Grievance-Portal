@@ -81,6 +81,18 @@ const SubmitGrievancePage = () => {
             <h1 className="text-3xl font-semibold text-white drop-shadow-[0_0_1.5rem_rgba(255,123,51,0.35)]">
             Submit a Grievance
             </h1>
+            <h2 className="text-lg font-semibold text-white drop-shadow-[0_0_1.25rem_rgba(255,123,51,0.3)]">
+            Submission guidelines:
+          </h2>
+          <ul className="mt-4 space-y-3 text-sm text-[#f1deff]/80">
+            <li style={{listStyleType: "disc"}}>Provide a clear and concise title summarizing the issue.</li>
+            <li style={{listStyleType: "disc"}}>Include relevant dates, locations, and parties involved in the description.</li>
+            <li style={{listStyleType: "disc"}}>Upload supporting documents such as images, letters, or receipts if applicable.</li>
+            <li style={{listStyleType: "disc"}}>
+              For sensitive matters, enable anonymous submission. You&apos;ll receive a tracking code for
+              future reference.
+            </li>
+          </ul>
             <p className="text-base text-[#f1deff]/85">
               Share your concern with the institute grievance cell. Provide as much detail as possible to
               help us resolve your issue quickly.

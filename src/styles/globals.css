@@ -6,6 +6,11 @@
   --accent-primary: #ff7b33;
   --accent-secondary: #a855f7;
   --accent-muted: rgba(255, 123, 51, 0.12);
+  --surface-card: rgba(18, 7, 31, 0.88);
+  --surface-elevated: rgba(27, 12, 47, 0.92);
+  --surface-border: rgba(255, 255, 255, 0.08);
+  --surface-border-strong: rgba(255, 123, 51, 0.35);
+  --text-muted: rgba(241, 222, 255, 0.75);
 }
 
 @theme inline {

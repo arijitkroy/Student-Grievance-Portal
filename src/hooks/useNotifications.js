@@ -11,7 +11,11 @@ export const useNotifications = () => {
       const data = await apiFetch("/api/notifications", { method: "GET" });
       setNotifications(data.notifications || []);
     } catch (error) {
-      console.error("Failed to load notifications", error);
+      if (error.status === 401) {
+        setNotifications([]);
+      } else {
+        console.error("Failed to load notifications", error);
+      }
     } finally {
       setLoading(false);
     }
@@ -22,7 +26,11 @@ export const useNotifications = () => {
       await apiFetch("/api/notifications/mark-read", { method: "POST" });
       await loadNotifications();
     } catch (error) {
-      console.error("Failed to mark notifications as read", error);
+      if (error.status === 401) {
+        setNotifications([]);
+      } else {
+        console.error("Failed to mark notifications as read", error);
+      }
     }
   }, [loadNotifications]);
 
