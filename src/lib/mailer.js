@@ -22,6 +22,40 @@ const createTransporter = () => {
   });
 };
 
+export const sendNotificationEmail = async ({
+  to,
+  subject = "Grievance Portal Notification",
+  message,
+  displayName,
+}) => {
+  if (!to || !message) {
+    console.warn("sendNotificationEmail called without recipient or message");
+    return;
+  }
+
+  const transporter = getTransporter();
+  const greetingName = displayName || "there";
+  const bodyLines = [
+    `Hello ${greetingName},`,
+    "",
+    message,
+    "",
+    "Please sign in to the Grievance Portal for more details.",
+  ];
+
+  await transporter.sendMail({
+    from: process.env.SMTP_FROM,
+    to,
+    subject,
+    text: bodyLines.join("\n"),
+    html: `
+      <p>Hello ${greetingName},</p>
+      <p>${message}</p>
+      <p>Please sign in to the Grievance Portal for more details.</p>
+    `,
+  });
+};
+
 let cachedTransporter = null;
 
 const getTransporter = () => {
