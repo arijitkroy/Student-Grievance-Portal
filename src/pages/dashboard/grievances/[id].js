@@ -290,6 +290,22 @@ const GrievanceDetailPage = () => {
               <span className="rounded-full border border-[rgba(163,255,109,0.45)] bg-[rgba(163,255,109,0.15)] px-3 py-1 font-medium text-[#d8ffc2]">
                 {grievance.category}
               </span>
+              {user?.role === "admin" && !grievance.anonymous && grievance.reporter && (
+                <span className="inline-flex items-center gap-2 rounded-full border border-[rgba(168,85,247,0.45)] bg-[rgba(168,85,247,0.18)] px-3 py-1 font-medium text-[#e9d5ff]">
+                  <svg
+                    className="h-3.5 w-3.5"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="1.6"
+                    viewBox="0 0 24 24"
+                  >
+                    <path d="M5.121 17.804A8 8 0 0112 15a8 8 0 016.879 2.804M15 11a3 3 0 10-6 0 3 3 0 006 0z" />
+                  </svg>
+                  <span>{grievance.reporter.displayName || grievance.reporter.email || "Reporter"}</span>
+                </span>
+              )}
               {grievance.anonymous && (
                 <span className="rounded-full border border-[rgba(253,224,71,0.45)] bg-[rgba(253,224,71,0.12)] px-3 py-1 font-medium text-[#fde68a]">
                   Anonymous

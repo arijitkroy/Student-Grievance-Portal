@@ -43,7 +43,34 @@ export default async function handler(req, res) {
         return res.status(403).json({ message: "Access denied" });
       }
 
-      return res.status(200).json({ grievance: sanitizeGrievanceForNonOwner(grievance) });
+      const responseGrievance = sanitizeGrievanceForNonOwner({ ...grievance });
+
+      if (
+        isAdmin &&
+        responseGrievance &&
+        !responseGrievance.anonymous &&
+        responseGrievance.createdBy
+      ) {
+        try {
+          const reporterDoc = await adminDb
+            .collection("users")
+            .doc(responseGrievance.createdBy)
+            .get();
+          if (reporterDoc.exists) {
+            const reporterData = reporterDoc.data() || {};
+            responseGrievance.reporter = {
+              id: reporterDoc.id,
+              displayName: reporterData.displayName || null,
+              email: reporterData.email || null,
+              department: reporterData.department || null,
+            };
+          }
+        } catch (err) {
+          console.error("Failed to load reporter details", err);
+        }
+      }
+
+      return res.status(200).json({ grievance: responseGrievance });
     } catch (error) {
       if (!res.headersSent) {
         const statusCode = error.message === "UNAUTHENTICATED" ? 401 : 500;
