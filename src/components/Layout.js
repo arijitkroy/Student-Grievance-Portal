@@ -17,25 +17,32 @@ const Layout = ({ children }) => {
   const { user, isAdmin, logout } = useAuth();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [notificationsOpen, setNotificationsOpen] = useState(false);
+  const [profileMenuOpen, setProfileMenuOpen] = useState(false);
   const { notifications, loading: notificationsLoading, markAllRead, markOneRead } = useNotifications();
   const router = useRouter();
 
   useEffect(() => {
     const handleClick = (event) => {
-      if (!notificationsOpen) return;
-      const dropdown = document.getElementById("nav-notifications-dropdown");
-      if (dropdown && !dropdown.contains(event.target)) {
+      const notificationsDropdown = document.getElementById("nav-notifications-dropdown");
+      const profileDropdown = document.getElementById("nav-profile-dropdown");
+
+      if (notificationsOpen && notificationsDropdown && !notificationsDropdown.contains(event.target)) {
         setNotificationsOpen(false);
+      }
+
+      if (profileMenuOpen && profileDropdown && !profileDropdown.contains(event.target)) {
+        setProfileMenuOpen(false);
       }
     };
 
     document.addEventListener("mousedown", handleClick);
     return () => document.removeEventListener("mousedown", handleClick);
-  }, [notificationsOpen]);
+  }, [notificationsOpen, profileMenuOpen]);
 
   const handleNotificationClick = (notification) => {
     if (!notification) return;
     setNotificationsOpen(false);
+    setProfileMenuOpen(false);
     if (notification.id) {
       markOneRead(notification.id);
     }
@@ -147,13 +154,49 @@ const Layout = ({ children }) => {
                     </div>
                   )}
                 </div>
-                <button
-                  type="button"
-                  onClick={logout}
-                  className="rounded-md border border-transparent bg-[#2b123e] px-3 py-1.5 text-sm font-medium text-[var(--accent-primary)] shadow-[0_0_1.25rem_rgba(255,123,51,0.35)] transition hover:bg-[#3e1c57]"
-                >
-                  Logout
-                </button>
+                <div className="relative" id="nav-profile-dropdown">
+                  <button
+                    type="button"
+                    aria-label="Open profile menu"
+                    onClick={() => {
+                      setProfileMenuOpen((open) => !open);
+                      setNotificationsOpen(false);
+                    }}
+                    className={`flex h-10 w-10 items-center justify-center rounded-full border border-[rgba(168,85,247,0.45)] bg-[rgba(168,85,247,0.12)] text-sm font-semibold text-white shadow-[0_0_1.25rem_rgba(168,85,247,0.35)] transition hover:-translate-y-[2px] hover:bg-[rgba(168,85,247,0.18)] ${
+                      profileMenuOpen ? "ring-2 ring-[rgba(168,85,247,0.4)]" : ""
+                    }`}
+                  >
+                    {user.displayName ? user.displayName.charAt(0).toUpperCase() : "U"}
+                  </button>
+                  {profileMenuOpen && (
+                    <div className="absolute right-0 z-50 mt-3 w-48 rounded-3xl border border-[var(--surface-border)] bg-[var(--surface-card)] p-2 shadow-[0_0_2.5rem_rgba(168,85,247,0.25)] backdrop-blur">
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setProfileMenuOpen(false);
+                          router.push("/dashboard/profile");
+                        }}
+                        className="flex w-full items-center gap-3 rounded-2xl px-3 py-2 text-left text-sm text-[#f1deff] transition hover:bg-[rgba(168,85,247,0.15)]"
+                      >
+                        <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-[rgba(168,85,247,0.2)] text-xs font-semibold text-[var(--accent-secondary)]">{
+                          user.displayName ? user.displayName.charAt(0).toUpperCase() : "U"
+                        }</span>
+                        <span>Profile</span>
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setProfileMenuOpen(false);
+                          logout();
+                        }}
+                        className="mt-1 flex w-full items-center gap-3 rounded-2xl px-3 py-2 text-left text-sm text-[#f1deff] transition hover:bg-[rgba(255,123,51,0.18)]"
+                      >
+                        <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-[rgba(255,123,51,0.18)] text-xs font-semibold text-[var(--accent-primary)]">↩</span>
+                        <span>Logout</span>
+                      </button>
+                    </div>
+                  )}
+                </div>
               </div>
             )}
           </nav>
@@ -222,16 +265,28 @@ const Layout = ({ children }) => {
               )}
 
               {user && (
-                <button
-                  type="button"
-                  onClick={() => {
-                    setMobileOpen(false);
-                    logout();
-                  }}
-                  className="mt-2 w-full rounded-md border border-transparent bg-[#2b123e] px-3 py-2 text-sm font-medium text-[var(--accent-primary)] shadow-[0_0_1.25rem_rgba(255,123,51,0.35)] transition hover:bg-[#3e1c57]"
-                >
-                  Logout
-                </button>
+                <div className="mt-4 space-y-3">
+                  <Link
+                    href="/dashboard/profile"
+                    onClick={() => setMobileOpen(false)}
+                    className="flex items-center gap-3 rounded-2xl border border-[var(--surface-border)] bg-[var(--surface-card)] px-3 py-3 text-sm font-medium text-[#f1deff] transition hover:bg-[rgba(168,85,247,0.15)]"
+                  >
+                    <span className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-[rgba(168,85,247,0.2)] text-sm font-semibold text-[var(--accent-secondary)]">{
+                      user.displayName ? user.displayName.charAt(0).toUpperCase() : "U"
+                    }</span>
+                    Profile
+                  </Link>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setMobileOpen(false);
+                      logout();
+                    }}
+                    className="flex w-full items-center justify-center rounded-2xl border border-[var(--accent-primary)] bg-[var(--accent-primary)] px-4 py-2 text-sm font-semibold text-[#1a0b27] shadow-[0_0_1.5rem_rgba(255,123,51,0.35)] transition hover:bg-[#ff965f]"
+                  >
+                    Logout
+                  </button>
+                </div>
               )}
             </nav>
           </div>

@@ -64,18 +64,33 @@ const GrievanceForm = ({
       <div className="grid gap-5 sm:grid-cols-2">
         <div className="flex flex-col gap-2">
           <label className="text-sm font-medium text-[#f1deff]">Category</label>
-          <select
-            name="category"
-            value={form.category}
-            onChange={handleChange}
-            className="rounded-xl border border-[rgba(163,255,109,0.4)] bg-[#11051b] px-3 py-2 text-sm text-[#f7e8ff] shadow-[0_0_1.5rem_rgba(126,255,95,0.35)] focus:border-[rgba(163,255,109,0.8)] focus:outline-none focus:ring-2 focus:ring-[rgba(126,255,95,0.55)]"
-          >
-            {GRIEVANCE_CATEGORIES.map((category) => (
-              <option key={category} value={category}>
-                {category}
-              </option>
-            ))}
-          </select>
+          <div className="relative rounded-2xl border border-transparent bg-gradient-to-r from-[rgba(168,85,247,0.45)] to-[rgba(255,123,51,0.45)] p-[1px] shadow-[0_0_2rem_rgba(168,85,247,0.2)]">
+            <select
+              name="category"
+              value={form.category}
+              onChange={handleChange}
+              className="w-full appearance-none rounded-[1rem] border border-[rgba(163,255,109,0.45)] bg-[#12061c]/95 px-4 py-2.5 pr-11 text-sm font-medium text-[#f7e8ff] backdrop-blur shadow-[0_0_1.5rem_rgba(126,255,95,0.35)] focus:border-[rgba(163,255,109,0.85)] focus:outline-none focus:ring-2 focus:ring-[rgba(126,255,95,0.55)]"
+            >
+              {GRIEVANCE_CATEGORIES.map((category) => (
+                <option key={category} value={category}>
+                  {category}
+                </option>
+              ))}
+            </select>
+            <span className="pointer-events-none absolute inset-y-0 right-3 flex items-center text-[var(--accent-secondary)]">
+              <svg
+                className="h-4 w-4"
+                fill="none"
+                stroke="currentColor"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="1.8"
+                viewBox="0 0 24 24"
+              >
+                <path d="M6 9l6 6 6-6" />
+              </svg>
+            </span>
+          </div>
         </div>
         {showAssignmentField && (
           <div className="flex flex-col gap-2">
