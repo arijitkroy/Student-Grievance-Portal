@@ -24,7 +24,8 @@ const GrievanceDetailPage = () => {
   const [actionSubmitting, setActionSubmitting] = useState(false);
   const [feedbackRating, setFeedbackRating] = useState(5);
   const [feedbackComment, setFeedbackComment] = useState("");
-  const [assignmentValue, setAssignmentValue] = useState("");
+  const [pendingStatus, setPendingStatus] = useState("");
+  const [statusComment, setStatusComment] = useState("");
   const [previewAttachment, setPreviewAttachment] = useState(null);
 
   const loadGrievance = async () => {
@@ -69,38 +70,11 @@ const GrievanceDetailPage = () => {
         body: { action: "status", status, comment },
       });
       await loadGrievance();
+      if (comment) {
+        setStatusComment("");
+      }
     } catch (err) {
       setError(err.message || "Failed to update status");
-    } finally {
-      setActionSubmitting(false);
-    }
-  };
-
-  const handleAssignment = async (assignedTo) => {
-    setActionSubmitting(true);
-    try {
-      await apiFetch(`/api/grievances/${id}`, {
-        method: "PATCH",
-        body: { action: "assign", assignedTo },
-      });
-      await loadGrievance();
-    } catch (err) {
-      setError(err.message || "Failed to update assignment");
-    } finally {
-      setActionSubmitting(false);
-    }
-  };
-
-  const handleEscalation = async (comment) => {
-    setActionSubmitting(true);
-    try {
-      await apiFetch(`/api/grievances/${id}`, {
-        method: "PATCH",
-        body: { action: "escalate", comment },
-      });
-      await loadGrievance();
-    } catch (err) {
-      setError(err.message || "Failed to escalate grievance");
     } finally {
       setActionSubmitting(false);
     }
@@ -123,7 +97,8 @@ const GrievanceDetailPage = () => {
 
   useEffect(() => {
     if (grievance) {
-      setAssignmentValue(grievance.assignedTo || "");
+      setPendingStatus(grievance.status || "");
+      setStatusComment("");
     }
   }, [grievance]);
 
@@ -137,11 +112,17 @@ const GrievanceDetailPage = () => {
   const renderAdminActions = () => {
     if (user?.role !== "admin" || !grievance) return null;
 
+    const isClosed = grievance.status === "resolved" || grievance.status === "rejected";
+
     return (
       <div className="space-y-6 rounded-3xl border border-[rgba(168,85,247,0.35)] bg-[#11051b] p-6 shadow-[0_0_2.5rem_rgba(168,85,247,0.2)]">
         <div>
           <h2 className="text-lg font-semibold text-white drop-shadow-[0_0_1rem_rgba(255,123,51,0.3)]">Admin Actions</h2>
-          <p className="text-sm text-[#f1deff]/75">Update status, assign to a committee, or escalate.</p>
+          <p className="text-sm text-[#f1deff]/75">
+            {isClosed
+              ? "This grievance is closed. Further updates are disabled."
+              : "Update status or add escalation notes."}
+          </p>
         </div>
         <div className="space-y-4">
           <div className="flex flex-col gap-2">
@@ -149,9 +130,9 @@ const GrievanceDetailPage = () => {
             <div className="flex flex-wrap items-center gap-3">
               <select
                 className="rounded-xl border border-[rgba(163,255,109,0.4)] bg-[#06020d] px-3 py-2 text-sm text-[#f7e8ff] shadow-[0_0_1.5rem_rgba(126,255,95,0.35)] focus:border-[rgba(163,255,109,0.8)] focus:outline-none focus:ring-2 focus:ring-[rgba(126,255,95,0.55)]"
-                value={grievance.status}
-                onChange={(event) => handleStatusUpdate(event.target.value)}
-                disabled={actionSubmitting}
+                value={pendingStatus}
+                onChange={(event) => setPendingStatus(event.target.value)}
+                disabled={actionSubmitting || isClosed}
               >
                 {statusOptions.map((option) => (
                   <option key={option.value} value={option.value}>
@@ -162,22 +143,35 @@ const GrievanceDetailPage = () => {
             </div>
           </div>
           <div className="flex flex-col gap-2">
-            <label className="text-sm font-medium text-[#f1deff]">Assign to department</label>
-            <input
-              type="text"
+            <label className="text-sm font-medium text-[#f1deff]">Escalation Notes</label>
+            <textarea
+              rows={4}
+              value={statusComment}
+              onChange={(event) => setStatusComment(event.target.value)}
               className="rounded-xl border border-[rgba(163,255,109,0.4)] bg-[#06020d] px-3 py-2 text-sm text-[#f7e8ff] shadow-[0_0_1.5rem_rgba(126,255,95,0.35)] placeholder:text-[#f7e8ff]/65 focus:border-[rgba(163,255,109,0.8)] focus:outline-none focus:ring-2 focus:ring-[rgba(126,255,95,0.55)]"
-              value={assignmentValue}
-              placeholder="Department or committee"
-              onChange={(event) => setAssignmentValue(event.target.value)}
-              onBlur={() => handleAssignment(assignmentValue)}
-              disabled={actionSubmitting}
+              placeholder="Share updates or escalation context"
+              disabled={actionSubmitting || isClosed}
             />
           </div>
-          <CommentForm
-            title="Escalation Notes"
-            onSubmit={handleEscalation}
-            submitting={actionSubmitting}
-          />
+          <button
+            type="button"
+            onClick={() =>
+              handleStatusUpdate(
+                pendingStatus,
+                statusComment.trim() ? statusComment.trim() : undefined
+              )
+            }
+            disabled={
+              actionSubmitting ||
+              !pendingStatus ||
+              pendingStatus === grievance.status ||
+              !statusComment.trim() ||
+              isClosed
+            }
+            className="inline-flex items-center justify-center rounded-full border border-[var(--accent-secondary)] bg-[var(--accent-secondary)] px-4 py-2 text-sm font-semibold text-[#1a0b27] shadow-[0_0_2rem_rgba(168,85,247,0.35)] transition hover:-translate-y-1 hover:bg-[#c084fc] disabled:cursor-not-allowed disabled:border-[#5b328f] disabled:bg-[#5b328f] disabled:text-[#1f0a28]"
+          >
+            Post Update
+          </button>
         </div>
       </div>
     );

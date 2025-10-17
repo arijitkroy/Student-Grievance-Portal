@@ -33,38 +33,54 @@ const DashboardPage = () => {
     []
   );
 
-  const loadData = useCallback(async () => {
-    if (!user) return;
+  const loadData = useCallback(
+    async ({ guard } = {}) => {
+      if (!user) return;
 
-    setLoading(true);
-    setError("");
+      const isActive = () => !guard || guard.current;
 
-    try {
-      const query = buildQueryString({
-        status: filters.status,
-        category: filters.category,
-        assignedTo: filters.assignedTo || undefined,
-      });
+      if (isActive()) {
+        setLoading(true);
+        setError("");
+      }
 
-      const [grievancesRes, statsRes] = await Promise.all([
-        apiFetch(`/api/grievances${query}`),
-        apiFetch(`/api/grievances/stats`),
-      ]);
+      try {
+        const query = buildQueryString({
+          status: filters.status,
+          category: filters.category,
+          assignedTo: filters.assignedTo || undefined,
+        });
 
-      setGrievances(grievancesRes.grievances || []);
-      setStats(statsRes.stats || null);
-    } catch (err) {
-      setError(err.message || "Failed to load dashboard data");
-    } finally {
-      setLoading(false);
-    }
-  }, [filters.category, filters.status, filters.assignedTo, user]);
+        const [grievancesRes, statsRes] = await Promise.all([
+          apiFetch(`/api/grievances${query}`),
+          apiFetch(`/api/grievances/stats`),
+        ]);
+
+        if (!isActive()) return;
+
+        setGrievances(grievancesRes.grievances || []);
+        setStats(statsRes.stats || null);
+      } catch (err) {
+        if (!isActive()) return;
+        setError(err.message || "Failed to load dashboard data");
+      } finally {
+        if (!isActive()) return;
+        setLoading(false);
+      }
+    },
+    [filters.assignedTo, filters.category, filters.status, user]
+  );
 
   useEffect(() => {
-    if (!authLoading && user) {
-      loadData();
-    }
-  }, [authLoading, loadData, user]);
+    if (authLoading || !user) return;
+
+    const guard = { current: true };
+    loadData({ guard });
+
+    return () => {
+      guard.current = false;
+    };
+  }, [authLoading, user, loadData]);
 
   const handleFilterChange = (event) => {
     const { name, value } = event.target;

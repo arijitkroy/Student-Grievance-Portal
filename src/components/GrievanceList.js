@@ -24,17 +24,17 @@ const GrievanceList = ({ grievances = [], emptyLabel = "No grievances found" }) 
           key={grievance.id}
           className="group block rounded-2xl border border-white/10 bg-white/5 p-5 shadow-[0_0_2.5rem_rgba(168,85,247,0.25)] transition duration-300 hover:-translate-y-2 hover:border-[var(--accent-primary)]/40 hover:shadow-[0_0_3.5rem_rgba(255,123,51,0.35)]"
         >
-          <div className="flex flex-wrap items-center justify-between gap-4">
-            <div>
+          <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
+            <div className="md:flex-1 md:min-w-0">
               <p className="text-xs font-semibold uppercase tracking-wide text-[#f1deff]/60">
                 {grievance.grievanceNumber}
               </p>
-              <h3 className="mt-1 text-lg font-semibold text-white drop-shadow-[0_0_1rem_rgba(255,123,51,0.3)]">
+              <h3 className="mt-1 text-lg font-semibold text-white drop-shadow-[0_0_1rem_rgba(255,123,51,0.3)] break-words">
                 {grievance.title}
               </h3>
               <p className="mt-1 line-clamp-2 text-sm text-[#f1deff]/75">{grievance.description}</p>
             </div>
-            <div className="flex flex-col items-end gap-3">
+            <div className="flex flex-col items-start gap-3 md:items-end md:flex-shrink-0">
               <GrievanceStatusBadge status={grievance.status} />
               <p className="text-xs text-[#f1deff]/60">
                 Updated {formatDate(grievance.updatedAt || grievance.createdAt)}
