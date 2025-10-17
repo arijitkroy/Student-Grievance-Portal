@@ -33,6 +33,14 @@ const Layout = ({ children }) => {
     return () => document.removeEventListener("mousedown", handleClick);
   }, [notificationsOpen]);
 
+  const handleNotificationClick = (notification) => {
+    if (!notification) return;
+    setNotificationsOpen(false);
+    if (notification.grievanceId) {
+      router.push(`/dashboard/grievances/${notification.grievanceId}`);
+    }
+  };
+
   useEffect(() => {
     // redirect authenticated users away from public auth pages to dashboard
     // allow logged-in users to still visit the Home ("/") page;
@@ -55,14 +63,9 @@ const Layout = ({ children }) => {
       <header className="sticky top-0 z-40 border-b border-[#301a41] bg-[#12071f]/90 backdrop-blur">
         <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3 px-4 py-3 sm:flex-nowrap sm:gap-4 sm:px-6">
           <Link href="/" className="flex items-center gap-3">
-            <Image
-              src="/logo.png"
-              alt="LastCryy logo"
-              width={40}
-              height={40}
-              className="h-10 w-10 rounded-full border border-[var(--accent-primary)]/40 bg-white/10 p-1 shadow-[0_0_1.25rem_rgba(255,123,51,0.35)]"
-              priority
-            />
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-[var(--accent-primary)]/40 bg-white/10 p-1.5 shadow-[0_0_1.25rem_rgba(255,123,51,0.35)]">
+              <Image src="/logo.png" alt="LastCryy logo" width={32} height={32} priority className="h-8 w-8" />
+            </div>
             <span className="text-lg font-semibold text-[var(--accent-primary)] drop-shadow-[0_0_0.75rem_rgba(255,123,51,0.35)] sm:text-xl">
               LastCryy
             </span>
@@ -127,14 +130,17 @@ const Layout = ({ children }) => {
                   </button>
                   {notificationsOpen && (
                     <div className="absolute right-0 z-50 mt-3 w-80 max-w-[90vw] rounded-3xl border border-[rgba(253,224,71,0.25)] bg-[#12071f]/95 p-3 shadow-[0_0_2.5rem_rgba(253,224,71,0.25)] backdrop-blur">
+                      <div className="max-h-[26rem] overflow-y-auto pr-1">
                       <NotificationsPanel
                         notifications={notifications}
                         loading={notificationsLoading}
+                        onNotificationClick={handleNotificationClick}
                         onMarkAllRead={() => {
                           markAllRead();
                           setNotificationsOpen(false);
                         }}
                       />
+                      </div>
                     </div>
                   )}
                 </div>

@@ -119,7 +119,7 @@ const DashboardPage = () => {
 
         <DashboardStats stats={stats} />
 
-        <section className="grid gap-6 lg:grid-cols-[2fr_1fr]">
+        <section className="grid gap-6">
           <div className="space-y-6">
             <div className="rounded-3xl border border-[rgba(253,224,71,0.4)] bg-white/5 p-5 shadow-[0_0_2.5rem_rgba(253,224,71,0.3)] backdrop-blur">
               <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
@@ -176,13 +176,6 @@ const DashboardPage = () => {
                 )}
               </div>
             </div>
-          </div>
-          <div className="space-y-6">
-            <NotificationsPanel
-              notifications={notifications}
-              onMarkAllRead={markAllRead}
-              loading={notificationsLoading}
-            />
           </div>
         </section>
       </div>

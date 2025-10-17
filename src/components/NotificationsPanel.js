@@ -9,7 +9,7 @@ const formatDate = (value) => {
   return "";
 };
 
-const NotificationsPanel = ({ notifications = [], onMarkAllRead, loading = false }) => {
+const NotificationsPanel = ({ notifications = [], onMarkAllRead, loading = false, onNotificationClick }) => {
   const hasNotifications = notifications.length > 0;
 
   return (
@@ -35,18 +35,21 @@ const NotificationsPanel = ({ notifications = [], onMarkAllRead, loading = false
           </li>
         )}
         {notifications.map((notification) => (
-          <li
-            key={notification.id}
-            className={`rounded-lg px-4 py-3 text-sm ${
-              notification.read
-                ? "border border-white/10 bg-white/5 text-[#f1deff]/75"
-                : "border border-[var(--accent-primary)]/40 bg-[rgba(255,123,51,0.16)] text-[var(--accent-primary)] shadow-[0_0_1.5rem_rgba(255,123,51,0.25)]"
-            }`}
-          >
-            <p className="font-medium">{notification.message}</p>
-            <p className="text-xs text-[#f1deff]/60">
-              {formatDate(notification.createdAt)}
-            </p>
+          <li key={notification.id}>
+            <button
+              type="button"
+              onClick={() => onNotificationClick?.(notification)}
+              className={`w-full rounded-lg px-4 py-3 text-left text-sm transition ${
+                notification.read
+                  ? "border border-white/10 bg-white/5 text-[#f1deff]/75 hover:border-[rgba(253,224,71,0.35)] hover:bg-[rgba(253,224,71,0.08)]"
+                  : "border border-[var(--accent-primary)]/40 bg-[rgba(255,123,51,0.16)] text-[var(--accent-primary)] shadow-[0_0_1.5rem_rgba(255,123,51,0.25)] hover:border-[var(--accent-primary)] hover:bg-[rgba(255,123,51,0.22)]"
+              }`}
+            >
+              <p className="font-medium">{notification.message}</p>
+              <p className="text-xs text-[#f1deff]/60">
+                {formatDate(notification.createdAt)}
+              </p>
+            </button>
           </li>
         ))}
       </ul>
