@@ -273,19 +273,19 @@ const GrievanceDetailPage = () => {
           <header className="relative overflow-hidden rounded-3xl border border-[rgba(163,255,109,0.35)] bg-gradient-to-br from-[#1a0823] via-[#12051b] to-[#06010f] p-6 shadow-[0_0_3rem_rgba(163,255,109,0.25)]">
             <div className="pointer-events-none absolute -left-12 top-8 h-32 w-32 rounded-full bg-[rgba(163,255,109,0.35)] blur-3xl" />
             <div className="pointer-events-none absolute -right-16 bottom-6 h-36 w-36 rounded-full bg-[rgba(168,85,247,0.25)] blur-3xl" />
-            <div className="relative flex flex-wrap items-center justify-between gap-4">
-              <div>
+            <div className="relative flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
+              <div className="md:flex-1 md:min-w-0">
                 <p className="text-xs font-semibold uppercase tracking-[0.35em] text-[rgba(163,255,109,0.75)]">
                   {grievance.grievanceNumber}
                 </p>
-                <h1 className="mt-2 text-2xl font-semibold text-white drop-shadow-[0_0_1.5rem_rgba(255,123,51,0.35)]">
+                <h1 className="mt-2 text-2xl font-semibold text-white drop-shadow-[0_0_1.5rem_rgba(255,123,51,0.35)] break-words">
                   {grievance.title}
                 </h1>
                 <p className="mt-2 text-sm text-[#f1deff]/85 whitespace-pre-wrap">
                   {grievance.description}
                 </p>
               </div>
-              <div className="flex flex-col items-end gap-2">
+              <div className="flex flex-col items-start gap-2 md:items-end md:flex-shrink-0">
                 <GrievanceStatusBadge status={grievance.status} />
                 <p className="text-xs text-[#f1deff]/60">
                   Updated {new Date(grievance.updatedAt).toLocaleString()}
