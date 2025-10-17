@@ -60,15 +60,31 @@ export const AuthProvider = ({ children }) => {
 
   const register = useCallback(
     async ({ email, password, displayName, role, department, adminInviteCode }) => {
-      await fetchJson("/api/auth/register", {
+      return fetchJson("/api/auth/register", {
         method: "POST",
         body: JSON.stringify({
+          step: "initiate",
           email,
           password,
           displayName,
           role,
           department,
           adminInviteCode,
+        }),
+      });
+    },
+    []
+  );
+
+  const verifyRegistrationOtp = useCallback(
+    async ({ sessionId, otp, email, password }) => {
+      await fetchJson("/api/auth/register", {
+        method: "POST",
+        body: JSON.stringify({
+          step: "verify",
+          sessionId,
+          otp,
+          password,
         }),
       });
       await login(email, password);
@@ -89,6 +105,7 @@ export const AuthProvider = ({ children }) => {
     logout,
     register,
     reload: loadSession,
+    verifyRegistrationOtp,
     isAdmin: user?.role === "admin",
   };
 

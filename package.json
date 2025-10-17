@@ -12,6 +12,7 @@
     "firebase": "^11.0.2",
     "firebase-admin": "^12.6.0",
     "formidable": "^3.5.2",
+    "nodemailer": "^6.9.15",
     "next": "15.5.4",
     "react": "19.1.0",
     "react-dom": "19.1.0"
