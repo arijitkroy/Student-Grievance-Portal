@@ -104,6 +104,8 @@ export default async function handler(req, res) {
           updatedBy: user.id,
         });
 
+        const commenterName = user.displayName || user.email || "User";
+
         const recipients = new Set();
         if (grievance.createdBy && grievance.createdBy !== user.id) {
           recipients.add(grievance.createdBy);
@@ -117,7 +119,7 @@ export default async function handler(req, res) {
             if (doc.id !== user.id) recipients.add(doc.id);
           });
         } else {
-          await notifyAdmins({ grievanceId: id, message: "New comment from user" });
+          await notifyAdmins({ grievanceId: id, message: `New comment from ${commenterName}` });
         }
 
         await Promise.all(
@@ -125,7 +127,7 @@ export default async function handler(req, res) {
             createNotification({
               grievanceId: id,
               recipientId,
-              message: "New comment added",
+              message: `New comment from ${commenterName}`,
             })
           )
         );
