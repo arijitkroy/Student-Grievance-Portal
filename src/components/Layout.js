@@ -9,8 +9,7 @@ import { useNotifications } from "@/hooks/useNotifications";
 const navLinks = [
   { href: "/", label: "Home", requiresAuth: false },
   { href: "/dashboard", label: "Dashboard", requiresAuth: true },
-  { href: "/dashboard/submit", label: "Submit Grievance", requiresAuth: true },
-  { href: "/admin", label: "Admin", requiresAuth: true, roles: ["admin"] },
+  { href: "/dashboard/submit", label: "Submit Grievance", requiresAuth: true }
 ];
 
 const Layout = ({ children }) => {
