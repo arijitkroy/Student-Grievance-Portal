@@ -2,7 +2,7 @@
 
 LastCryy is a **student grievance tracking portal** that brings students, staff, and administrators onto a single platform. The goal is simple: file a concern in minutes, keep everyone in the loop, and close the loop with clear accountability.
 
-<sub>Built with Next.js 15, React 19, Tailwind CSS 4, Firebase, and Firebase Admin.</sub>
+<sub>Built with Next.js 15, React 19, Tailwind CSS, Firebase, and Firebase Admin.</sub>
 
 ---
 
