@@ -9,7 +9,8 @@ import { useNotifications } from "@/hooks/useNotifications";
 const navLinks = [
   { href: "/", label: "Home", requiresAuth: false },
   { href: "/dashboard", label: "Dashboard", requiresAuth: true },
-  { href: "/dashboard/submit", label: "Submit Grievance", requiresAuth: true }
+  { href: "/dashboard/submit", label: "Submit Grievance", requiresAuth: true },
+  { href: "/dashboard/analytics", label: "Analytics", requiresAuth: true, roles: ["admin"] }
 ];
 
 const Layout = ({ children }) => {
