@@ -34,11 +34,35 @@ export const useNotifications = () => {
     }
   }, [loadNotifications]);
 
+  const markOneRead = useCallback(
+    async (notificationId) => {
+      if (!notificationId) return;
+      try {
+        await apiFetch("/api/notifications/mark-read", {
+          method: "POST",
+          body: { notificationId },
+        });
+        setNotifications((prev) =>
+          prev.map((notification) =>
+            notification.id === notificationId ? { ...notification, read: true } : notification
+          )
+        );
+      } catch (error) {
+        if (error.status === 401) {
+          setNotifications([]);
+        } else {
+          console.error("Failed to mark notification as read", error);
+        }
+      }
+    },
+    []
+  );
+
   useEffect(() => {
     loadNotifications();
   }, [loadNotifications]);
 
-  return { notifications, loading, refresh: loadNotifications, markAllRead };
+  return { notifications, loading, refresh: loadNotifications, markAllRead, markOneRead };
 };
 
 export default useNotifications;

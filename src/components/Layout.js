@@ -17,7 +17,7 @@ const Layout = ({ children }) => {
   const { user, isAdmin, logout } = useAuth();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [notificationsOpen, setNotificationsOpen] = useState(false);
-  const { notifications, loading: notificationsLoading, markAllRead } = useNotifications();
+  const { notifications, loading: notificationsLoading, markAllRead, markOneRead } = useNotifications();
   const router = useRouter();
 
   useEffect(() => {
@@ -36,6 +36,9 @@ const Layout = ({ children }) => {
   const handleNotificationClick = (notification) => {
     if (!notification) return;
     setNotificationsOpen(false);
+    if (notification.id) {
+      markOneRead(notification.id);
+    }
     if (notification.grievanceId) {
       router.push(`/dashboard/grievances/${notification.grievanceId}`);
     }
@@ -131,15 +134,15 @@ const Layout = ({ children }) => {
                   {notificationsOpen && (
                     <div className="absolute right-0 z-50 mt-3 w-80 max-w-[90vw] rounded-3xl border border-[rgba(253,224,71,0.25)] bg-[#12071f]/95 p-3 shadow-[0_0_2.5rem_rgba(253,224,71,0.25)] backdrop-blur">
                       <div className="max-h-[26rem] overflow-y-auto pr-1">
-                      <NotificationsPanel
-                        notifications={notifications}
-                        loading={notificationsLoading}
-                        onNotificationClick={handleNotificationClick}
-                        onMarkAllRead={() => {
-                          markAllRead();
-                          setNotificationsOpen(false);
-                        }}
-                      />
+                        <NotificationsPanel
+                          notifications={notifications}
+                          loading={notificationsLoading}
+                          onNotificationClick={handleNotificationClick}
+                          onMarkAllRead={() => {
+                            markAllRead();
+                            setNotificationsOpen(false);
+                          }}
+                        />
                       </div>
                     </div>
                   )}

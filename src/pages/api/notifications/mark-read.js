@@ -9,6 +9,22 @@ export default async function handler(req, res) {
 
   try {
     const user = await requireAuth(req, res, { allowAnonymousUser: false });
+    const { notificationId } = req.body || {};
+
+    if (notificationId) {
+      const docRef = adminDb.collection("notifications").doc(notificationId);
+      const doc = await docRef.get();
+
+      if (!doc.exists || doc.data()?.recipientId !== user.id) {
+        return res.status(404).json({ message: "Notification not found" });
+      }
+
+      if (!doc.data()?.read) {
+        await docRef.update({ read: true });
+      }
+
+      return res.status(200).json({ message: "Notification marked as read" });
+    }
 
     const batch = adminDb.batch();
     const snapshot = await adminDb
