@@ -95,7 +95,10 @@ export default async function handler(req, res) {
       const description = (getFieldValue(fields.description) || "").toString();
       const assignedToValue = getFieldValue(fields.assignedTo);
       const assignedTo = assignedToValue ? assignedToValue.toString().trim() || null : null;
-      const anonymous = fields.anonymous === "true";
+      const anonymousField = getFieldValue(fields.anonymous);
+      const anonymous = anonymousField === "true";
+      const initialCommentValue = getFieldValue(fields.initialComment);
+      const initialComment = initialCommentValue ? initialCommentValue.toString() : "";
 
       if (!user && !anonymous) {
         return res.status(401).json({ message: "Authentication required" });
@@ -129,7 +132,7 @@ export default async function handler(req, res) {
       const historyEntry = createGrievanceHistoryEntry({
         type: "status",
         status: "submitted",
-        comment: fields.initialComment || "",
+        comment: initialComment,
         updatedBy: user?.id || "anonymous",
       });
 

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Head from "next/head";
 import Layout from "@/components/Layout";
 import GrievanceForm from "@/components/GrievanceForm";
@@ -11,6 +11,7 @@ const SubmitGrievancePage = () => {
   const [successMessage, setSuccessMessage] = useState("");
   const [trackingCode, setTrackingCode] = useState("");
   const [error, setError] = useState("");
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
 
   const handleSubmit = async ({ form, files }) => {
     if (!user && !form.anonymous) {
@@ -64,6 +65,12 @@ const SubmitGrievancePage = () => {
       setSubmitting(false);
     }
   };
+
+  useEffect(() => {
+    if (successMessage) {
+      setShowSuccessModal(true);
+    }
+  }, [successMessage]);
 
   return (
     <Layout>
@@ -131,6 +138,29 @@ const SubmitGrievancePage = () => {
           showAssignmentField={user?.role === "admin"}
           showInitialComment
         />
+
+        {showSuccessModal && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#06010f]/85 px-6 py-12">
+            <div className="w-full max-w-md rounded-3xl border border-[rgba(163,255,109,0.25)] bg-gradient-to-br from-[#1a0823] via-[#12051b] to-[#06010f] p-8 text-center shadow-[0_0_3.5rem_rgba(163,255,109,0.35)]">
+              <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full border border-[rgba(163,255,109,0.4)] bg-[rgba(163,255,109,0.18)] text-3xl text-[#d8ffc2] shadow-[0_0_1.5rem_rgba(163,255,109,0.35)]">
+                ✓
+              </div>
+              <h3 className="mt-5 text-2xl font-semibold text-white drop-shadow-[0_0_1.5rem_rgba(255,123,51,0.3)]">
+                Grievance Submitted!
+              </h3>
+              <p className="mt-3 text-sm text-[#f1deff]/80">
+                {successMessage || "Your grievance has been successfully submitted."}
+              </p>
+              <button
+                type="button"
+                onClick={() => setShowSuccessModal(false)}
+                className="mt-6 inline-flex items-center justify-center rounded-full border border-[var(--accent-secondary)] bg-[var(--accent-secondary)] px-5 py-2 text-sm font-semibold text-[#1a0b27] shadow-[0_0_2rem_rgba(168,85,247,0.35)] transition hover:-translate-y-[2px] hover:bg-[#c084fc]"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        )}
 
         <section className="rounded-3xl border border-white/10 bg-white/5 p-6 shadow-[0_0_2.5rem_rgba(168,85,247,0.2)] backdrop-blur">
           <h2 className="text-lg font-semibold text-white drop-shadow-[0_0_1.25rem_rgba(255,123,51,0.3)]">
