@@ -24,6 +24,7 @@ const GrievanceDetailPage = () => {
   const [actionSubmitting, setActionSubmitting] = useState(false);
   const [feedbackRating, setFeedbackRating] = useState(5);
   const [feedbackComment, setFeedbackComment] = useState("");
+  const [assignmentValue, setAssignmentValue] = useState("");
   const [pendingStatus, setPendingStatus] = useState("");
   const [statusComment, setStatusComment] = useState("");
   const [previewAttachment, setPreviewAttachment] = useState(null);
@@ -57,6 +58,21 @@ const GrievanceDetailPage = () => {
       await loadGrievance();
     } catch (err) {
       setError(err.message || "Failed to post comment");
+    } finally {
+      setActionSubmitting(false);
+    }
+  };
+
+  const handleAssignment = async (assignedTo) => {
+    setActionSubmitting(true);
+    try {
+      await apiFetch(`/api/grievances/${id}`, {
+        method: "PATCH",
+        body: { action: "assign", assignedTo },
+      });
+      await loadGrievance();
+    } catch (err) {
+      setError(err.message || "Failed to update assignment");
     } finally {
       setActionSubmitting(false);
     }
@@ -97,6 +113,7 @@ const GrievanceDetailPage = () => {
 
   useEffect(() => {
     if (grievance) {
+      setAssignmentValue(grievance.assignedTo || "");
       setPendingStatus(grievance.status || "");
       setStatusComment("");
     }
@@ -125,6 +142,31 @@ const GrievanceDetailPage = () => {
           </p>
         </div>
         <div className="space-y-4">
+          <div className="flex flex-col gap-2">
+            <label className="text-sm font-medium text-[#f1deff]">Assign to department / committee</label>
+            <div className="flex flex-wrap items-center gap-3">
+              <input
+                type="text"
+                value={assignmentValue}
+                onChange={(event) => setAssignmentValue(event.target.value)}
+                disabled={actionSubmitting || isClosed}
+                placeholder="E.g. Disciplinary Committee"
+                className="rounded-xl border border-[rgba(163,255,109,0.4)] bg-[#06020d] px-3 py-2 text-sm text-[#f7e8ff] shadow-[0_0_1.5rem_rgba(126,255,95,0.35)] placeholder:text-[#f7e8ff]/45 focus:border-[rgba(163,255,109,0.8)] focus:outline-none focus:ring-2 focus:ring-[rgba(126,255,95,0.55)]"
+              />
+              <button
+                type="button"
+                onClick={() => handleAssignment(assignmentValue.trim() || null)}
+                disabled={
+                  actionSubmitting ||
+                  isClosed ||
+                  assignmentValue.trim() === (grievance.assignedTo || "")
+                }
+                className="inline-flex items-center rounded-full border border-[rgba(163,255,109,0.5)] bg-[rgba(163,255,109,0.15)] px-3 py-2 text-xs font-semibold text-[#d8ffc2] shadow-[0_0_1.5rem_rgba(126,255,95,0.35)] transition hover:-translate-y-[1px] hover:bg-[rgba(163,255,109,0.25)] disabled:cursor-not-allowed disabled:border-[rgba(163,255,109,0.2)] disabled:bg-[rgba(163,255,109,0.08)] disabled:text-[#8fb672]"
+              >
+                Update Assignment
+              </button>
+            </div>
+          </div>
           <div className="flex flex-col gap-2">
             <label className="text-sm font-medium text-[#f1deff]">Status</label>
             <div className="flex flex-wrap items-center gap-3">
