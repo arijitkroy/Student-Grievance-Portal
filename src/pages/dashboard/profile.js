@@ -85,15 +85,9 @@ const ProfilePage = () => {
               </h2>
               <ul className="mt-4 space-y-3 text-sm text-[var(--text-muted)]">
                 <li>
-                  <span className="font-semibold text-white">Update Profile</span>
-                  <p className="text-xs text-[var(--text-muted)]/80">
-                    Contact the admin team to update name, department, or other details.
-                  </p>
-                </li>
-                <li>
                   <span className="font-semibold text-white">Need Support?</span>
                   <p className="text-xs text-[var(--text-muted)]/80">
-                    Submit a support ticket or mail the grievance cell at support@lastcryy.com.
+                    Submit a support ticket or mail the grievance cell at lastcryyyyy@gmail.com.
                   </p>
                 </li>
                 <li>
