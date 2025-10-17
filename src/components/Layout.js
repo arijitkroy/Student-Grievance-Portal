@@ -3,6 +3,8 @@ import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { useAuth } from "@/context/AuthContext";
+import NotificationsPanel from "@/components/NotificationsPanel";
+import { useNotifications } from "@/hooks/useNotifications";
 
 const navLinks = [
   { href: "/", label: "Home", requiresAuth: false },
@@ -14,7 +16,22 @@ const navLinks = [
 const Layout = ({ children }) => {
   const { user, isAdmin, logout } = useAuth();
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [notificationsOpen, setNotificationsOpen] = useState(false);
+  const { notifications, loading: notificationsLoading, markAllRead } = useNotifications();
   const router = useRouter();
+
+  useEffect(() => {
+    const handleClick = (event) => {
+      if (!notificationsOpen) return;
+      const dropdown = document.getElementById("nav-notifications-dropdown");
+      if (dropdown && !dropdown.contains(event.target)) {
+        setNotificationsOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClick);
+    return () => document.removeEventListener("mousedown", handleClick);
+  }, [notificationsOpen]);
 
   useEffect(() => {
     // redirect authenticated users away from public auth pages to dashboard
@@ -81,13 +98,54 @@ const Layout = ({ children }) => {
             )}
 
             {user && (
-              <button
-                type="button"
-                onClick={logout}
-                className="rounded-md border border-transparent bg-[#2b123e] px-3 py-1.5 text-sm font-medium text-[var(--accent-primary)] shadow-[0_0_1.25rem_rgba(255,123,51,0.35)] transition hover:bg-[#3e1c57]"
-              >
-                Logout
-              </button>
+              <div className="flex items-center gap-3">
+                <div className="relative" id="nav-notifications-dropdown">
+                  <button
+                    type="button"
+                    aria-label="Show notifications"
+                    onClick={() => setNotificationsOpen((open) => !open)}
+                    className={`relative flex items-center justify-center rounded-full border border-[rgba(253,224,71,0.4)] bg-[#1c0f2b] p-2 text-[rgba(253,224,71,0.8)] shadow-[0_0_1.25rem_rgba(253,224,71,0.35)] transition hover:-translate-y-[2px] hover:bg-[rgba(253,224,71,0.12)] ${
+                      notificationsOpen ? "ring-2 ring-[rgba(253,224,71,0.4)]" : ""
+                    }`}
+                  >
+                    <svg
+                      className="h-5 w-5"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="1.8"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M15 17h5l-1.4-1.4a2 2 0 01-.6-1.4V11a5 5 0 10-10 0v3.2c0 .5-.2 1-.6 1.4L6 17h5m4 0a3 3 0 11-6 0"
+                      />
+                    </svg>
+                    {!notificationsLoading && notifications.some((n) => !n.read) && (
+                      <span className="absolute -top-1 -right-1 inline-flex h-3 w-3 items-center justify-center rounded-full bg-[var(--accent-primary)] text-[10px] font-semibold text-[#1a0b27]" />
+                    )}
+                  </button>
+                  {notificationsOpen && (
+                    <div className="absolute right-0 z-50 mt-3 w-80 max-w-[90vw] rounded-3xl border border-[rgba(253,224,71,0.25)] bg-[#12071f]/95 p-3 shadow-[0_0_2.5rem_rgba(253,224,71,0.25)] backdrop-blur">
+                      <NotificationsPanel
+                        notifications={notifications}
+                        loading={notificationsLoading}
+                        onMarkAllRead={() => {
+                          markAllRead();
+                          setNotificationsOpen(false);
+                        }}
+                      />
+                    </div>
+                  )}
+                </div>
+                <button
+                  type="button"
+                  onClick={logout}
+                  className="rounded-md border border-transparent bg-[#2b123e] px-3 py-1.5 text-sm font-medium text-[var(--accent-primary)] shadow-[0_0_1.25rem_rgba(255,123,51,0.35)] transition hover:bg-[#3e1c57]"
+                >
+                  Logout
+                </button>
+              </div>
             )}
           </nav>
 

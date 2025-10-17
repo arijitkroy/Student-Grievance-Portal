@@ -71,14 +71,25 @@ const SubmitGrievancePage = () => {
         <title>Submit Grievance | LastCryy</title>
       </Head>
       <div className="mx-auto max-w-3xl space-y-6">
-        <header className="space-y-3 rounded-3xl border border-white/10 bg-white/5 p-6 shadow-[0_0_3rem_rgba(255,123,51,0.2)] backdrop-blur">
-          <h1 className="text-3xl font-semibold text-white drop-shadow-[0_0_1.5rem_rgba(255,123,51,0.35)]">
+        <header className="relative overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br from-[#2b0c2f] via-[#16071f] to-[#07020f] p-8 shadow-[0_0_3.5rem_rgba(255,123,51,0.25)]">
+          <div className="pointer-events-none absolute -left-16 top-6 h-32 w-32 rounded-full bg-[rgba(255,123,51,0.22)] blur-3xl" />
+          <div className="pointer-events-none absolute -right-10 bottom-6 h-36 w-36 rounded-full bg-[rgba(168,85,247,0.22)] blur-3xl" />
+          <div className="relative space-y-4">
+            <span className="inline-flex items-center gap-2 rounded-full border border-[var(--accent-primary)]/40 bg-[rgba(255,123,51,0.15)] px-4 py-1 text-xs font-semibold uppercase tracking-[0.3em] text-[var(--accent-primary)]">
+              Submit Portal
+            </span>
+            <h1 className="text-3xl font-semibold text-white drop-shadow-[0_0_1.5rem_rgba(255,123,51,0.35)]">
             Submit a Grievance
-          </h1>
-          <p className="text-sm text-[#f1deff]/80">
-            Share your concern with the institute grievance cell. Provide as much detail as possible to
-            help us resolve your issue quickly.
-          </p>
+            </h1>
+            <p className="text-base text-[#f1deff]/85">
+              Share your concern with the institute grievance cell. Provide as much detail as possible to
+              help us resolve your issue quickly.
+            </p>
+            <div className="inline-flex items-center gap-3 rounded-full border border-[rgba(255,123,51,0.35)] bg-[rgba(255,123,51,0.12)] px-4 py-2 text-xs font-medium text-[var(--accent-primary)] shadow-[0_0_1.5rem_rgba(255,123,51,0.35)]">
+              <span className="inline-block h-2 w-2 rounded-full bg-[var(--accent-primary)]" />
+              Every submission generates a trackable case ID
+            </div>
+          </div>
         </header>
 
         {successMessage && (

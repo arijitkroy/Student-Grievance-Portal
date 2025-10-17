@@ -77,24 +77,37 @@ const DashboardPage = () => {
         <title>Dashboard | LastCryy</title>
       </Head>
       <div className="flex flex-col gap-8">
-        <header className="flex flex-col gap-4 rounded-3xl border border-white/10 bg-white/5 p-6 shadow-[0_0_3rem_rgba(255,123,51,0.2)] backdrop-blur md:flex-row md:items-center md:justify-between">
-          <div>
-            <h1 className="text-3xl font-semibold text-white drop-shadow-[0_0_1.5rem_rgba(255,123,51,0.35)]">
-              Dashboard
-            </h1>
-            <p className="mt-1 text-sm text-[#f1deff]/80">
-              View grievance activity, track progress, and stay updated on resolutions.
-            </p>
-          </div>
-          <div className="flex items-center gap-3">
-            <button
-              type="button"
-              onClick={loadData}
-              className="rounded-full border border-[var(--accent-primary)] bg-[var(--accent-primary)] px-4 py-2 text-sm font-semibold text-[#1a0b27] shadow-[0_0_2rem_rgba(255,123,51,0.35)] transition hover:-translate-y-1 hover:bg-[#ff965f] disabled:cursor-not-allowed disabled:border-[#6c3924] disabled:bg-[#6c3924] disabled:text-[#2e0f1f]"
-              disabled={loading}
-            >
-              Refresh
-            </button>
+        <header className="relative overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br from-[#2b0c2f] via-[#16071f] to-[#07020f] px-6 py-7 shadow-[0_0_3.5rem_rgba(255,123,51,0.25)]">
+          <div className="pointer-events-none absolute -left-14 top-6 h-32 w-32 rounded-full bg-[rgba(255,123,51,0.22)] blur-3xl" />
+          <div className="pointer-events-none absolute -right-12 bottom-6 h-36 w-36 rounded-full bg-[rgba(168,85,247,0.22)] blur-3xl" />
+          <div className="relative flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
+            <div className="space-y-3">
+              <span className="inline-flex items-center gap-2 rounded-full border border-[var(--accent-primary)]/40 bg-[rgba(255,123,51,0.15)] px-4 py-1 text-xs font-semibold uppercase tracking-[0.3em] text-[var(--accent-primary)]">
+                Dashboard Hub
+              </span>
+              <div>
+                <h1 className="text-3xl font-semibold text-white drop-shadow-[0_0_1.5rem_rgba(255,123,51,0.35)]">
+                  Dashboard
+                </h1>
+                <p className="mt-2 text-base text-[#f1deff]/85">
+                  View grievance activity, track progress, and stay updated on resolutions.
+                </p>
+              </div>
+              <div className="inline-flex items-center gap-3 rounded-full border border-[rgba(255,123,51,0.35)] bg-[rgba(255,123,51,0.12)] px-4 py-2 text-xs font-medium text-[var(--accent-primary)] shadow-[0_0_1.5rem_rgba(255,123,51,0.35)]">
+                <span className="inline-block h-2 w-2 rounded-full bg-[var(--accent-primary)]" />
+                Real-time stats auto-refresh every 5 minutes
+              </div>
+            </div>
+            <div className="flex items-center gap-3">
+              <button
+                type="button"
+                onClick={loadData}
+                className="rounded-full border border-[var(--accent-primary)] bg-[var(--accent-primary)] px-4 py-2 text-sm font-semibold text-[#1a0b27] shadow-[0_0_2rem_rgba(255,123,51,0.35)] transition hover:-translate-y-1 hover:bg-[#ff965f] disabled:cursor-not-allowed disabled:border-[#6c3924] disabled:bg-[#6c3924] disabled:text-[#2e0f1f]"
+                disabled={loading}
+              >
+                Refresh
+              </button>
+            </div>
           </div>
         </header>
 
@@ -108,7 +121,7 @@ const DashboardPage = () => {
 
         <section className="grid gap-6 lg:grid-cols-[2fr_1fr]">
           <div className="space-y-6">
-            <div className="rounded-3xl border border-white/10 bg-white/5 p-5 shadow-[0_0_2.5rem_rgba(168,85,247,0.2)] backdrop-blur">
+            <div className="rounded-3xl border border-[rgba(253,224,71,0.4)] bg-white/5 p-5 shadow-[0_0_2.5rem_rgba(253,224,71,0.3)] backdrop-blur">
               <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
                 <div className="space-y-1">
                   <h2 className="text-lg font-semibold text-white drop-shadow-[0_0_1.25rem_rgba(255,123,51,0.3)]">

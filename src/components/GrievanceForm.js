@@ -86,7 +86,7 @@ const GrievanceForm = ({
               value={form.assignedTo}
               onChange={handleChange}
               placeholder="Department / Committee"
-              className="rounded-xl border border-[rgba(163,255,109,0.4)] bg-[#11051b] px-3 py-2 text-sm text-[#f7e8ff] shadow-[0_0_1.5rem_rgba(126,255,95,0.35)] placeholder:text-[#f7e8ff]/40 focus:border-[rgba(163,255,109,0.8)] focus:outline-none focus:ring-2 focus:ring-[rgba(126,255,95,0.55)]"
+              className="rounded-xl border border-[rgba(163,255,109,0.4)] bg-[#11051b] px-3 py-2 text-sm text-[#f7e8ff] shadow-[0_0_1.5rem_rgba(126,255,95,0.35)] placeholder:text-[#f7e8ff]/65 focus:border-[rgba(163,255,109,0.8)] focus:outline-none focus:ring-2 focus:ring-[rgba(126,255,95,0.55)]"
             />
           </div>
         )}
@@ -99,7 +99,7 @@ const GrievanceForm = ({
           value={form.title}
           onChange={handleChange}
           placeholder="Summarize your grievance"
-          className={`rounded-xl border px-3 py-2 text-sm text-[#f7e8ff] shadow-[0_0_1.5rem_rgba(126,255,95,0.35)] focus:border-[rgba(163,255,109,0.8)] focus:outline-none focus:ring-2 focus:ring-[rgba(126,255,95,0.55)] ${
+          className={`rounded-xl border px-3 py-2 text-sm text-[#f7e8ff] shadow-[0_0_1.5rem_rgba(126,255,95,0.35)] placeholder:text-[#f7e8ff]/65 focus:border-[rgba(163,255,109,0.8)] focus:outline-none focus:ring-2 focus:ring-[rgba(126,255,95,0.55)] ${
             titleError ? "border-rose-400/60 bg-[rgba(244,63,94,0.12)]" : "border-[rgba(163,255,109,0.4)] bg-[#11051b]"
           }`}
         />
@@ -113,7 +113,7 @@ const GrievanceForm = ({
           onChange={handleChange}
           rows={6}
           placeholder="Provide detailed information about your grievance"
-          className={`rounded-xl border px-3 py-2 text-sm text-[#f7e8ff] shadow-[0_0_1.5rem_rgba(126,255,95,0.35)] focus:border-[rgba(163,255,109,0.8)] focus:outline-none focus:ring-2 focus:ring-[rgba(126,255,95,0.55)] ${
+          className={`rounded-xl border px-3 py-2 text-sm text-[#f7e8ff] shadow-[0_0_1.5rem_rgba(126,255,95,0.35)] placeholder:text-[#f7e8ff]/65 focus:border-[rgba(163,255,109,0.8)] focus:outline-none focus:ring-2 focus:ring-[rgba(126,255,95,0.55)] ${
             descriptionError ? "border-rose-400/60 bg-[rgba(244,63,94,0.12)]" : "border-[rgba(163,255,109,0.4)] bg-[#11051b]"
           }`}
         />
@@ -128,7 +128,7 @@ const GrievanceForm = ({
             onChange={handleChange}
             rows={4}
             placeholder="Add any additional context or comments for administrators"
-            className="rounded-xl border border-[rgba(163,255,109,0.4)] bg-[#11051b] px-3 py-2 text-sm text-[#f7e8ff] shadow-[0_0_1.5rem_rgba(126,255,95,0.35)] placeholder:text-[#f7e8ff]/40 focus:border-[rgba(163,255,109,0.8)] focus:outline-none focus:ring-2 focus:ring-[rgba(126,255,95,0.55)]"
+            className="rounded-xl border border-[rgba(163,255,109,0.4)] bg-[#11051b] px-3 py-2 text-sm text-[#f7e8ff] shadow-[0_0_1.5rem_rgba(126,255,95,0.35)] placeholder:text-[#f7e8ff]/65 focus:border-[rgba(163,255,109,0.8)] focus:outline-none focus:ring-2 focus:ring-[rgba(126,255,95,0.55)]"
           />
         </div>
       )}
@@ -143,7 +143,7 @@ const GrievanceForm = ({
         <p className="text-xs text-[#f1deff]/60">Upload supporting images or documents. Allowed formats: PDF, PNG, JPG.</p>
       </div>
       {allowAnonymous && (
-        <label className="flex items-center gap-3 rounded-xl border border-white/10 bg-white/10 px-4 py-3 text-sm text-[#f1deff] shadow-[0_0_1.5rem_rgba(168,85,247,0.2)]">
+        <label className="flex items-center gap-3 rounded-xl border border-[rgba(253,224,71,0.6)] bg-[rgba(253,224,71,0.1)] px-4 py-3 text-sm text-[#fde68a] shadow-[0_0_1.75rem_rgba(253,224,71,0.35)]">
           <input
             type="checkbox"
             name="anonymous"
