@@ -30,6 +30,7 @@ export const createNotification = async ({
   try {
     let email = recipientEmail || null;
     let displayName = recipientDisplayName || null;
+    let link = null;
 
     if (!email) {
       const contact = await loadRecipientContact(recipientId);
@@ -39,12 +40,19 @@ export const createNotification = async ({
       }
     }
 
+    const appUrl = process.env.APP_URL || process.env.NEXT_PUBLIC_APP_URL || null;
+    if (appUrl && grievanceId) {
+      const normalizedBase = appUrl.endsWith("/") ? appUrl.slice(0, -1) : appUrl;
+      link = `${normalizedBase}/dashboard/grievances/${grievanceId}`;
+    }
+
     if (email) {
       await sendNotificationEmail({
         to: email,
         displayName,
         subject: emailSubject || "Grievance Portal Notification",
         message,
+        link,
       });
     }
   } catch (error) {

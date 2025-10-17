@@ -27,6 +27,7 @@ export const sendNotificationEmail = async ({
   subject = "Grievance Portal Notification",
   message,
   displayName,
+  link,
 }) => {
   if (!to || !message) {
     console.warn("sendNotificationEmail called without recipient or message");
@@ -43,6 +44,10 @@ export const sendNotificationEmail = async ({
     "Please sign in to the Grievance Portal for more details.",
   ];
 
+  if (link) {
+    bodyLines.push("", `Direct link: ${link}`);
+  }
+
   await transporter.sendMail({
     from: process.env.SMTP_FROM,
     to,
@@ -52,6 +57,7 @@ export const sendNotificationEmail = async ({
       <p>Hello ${greetingName},</p>
       <p>${message}</p>
       <p>Please sign in to the Grievance Portal for more details.</p>
+      ${link ? `<p><a href="${link}" style="color:#a855f7;">View grievance details</a></p>` : ""}
     `,
   });
 };
