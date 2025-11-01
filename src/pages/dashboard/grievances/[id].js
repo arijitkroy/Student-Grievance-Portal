@@ -1,5 +1,7 @@
 import { useRouter } from "next/router";
 import { useEffect, useMemo, useState } from "react";
+import useSWR from "swr";
+import { doc, onSnapshot } from "firebase/firestore";
 import Head from "next/head";
 import Layout from "@/components/Layout";
 import GrievanceTimeline from "@/components/GrievanceTimeline";
@@ -8,6 +10,8 @@ import GrievanceStatusBadge from "@/components/GrievanceStatusBadge";
 import { useRequireAuth } from "@/hooks/useRequireAuth";
 import { apiFetch } from "@/lib/apiClient";
 import { GRIEVANCE_STATUSES } from "@/lib/models";
+import { firestore } from "@/lib/firebaseClient";
+import { serializeDocument } from "@/lib/serializers";
 
 const statusOptions = GRIEVANCE_STATUSES.map((status) => ({
   value: status,
@@ -17,10 +21,8 @@ const statusOptions = GRIEVANCE_STATUSES.map((status) => ({
 const GrievanceDetailPage = () => {
   const router = useRouter();
   const { id } = router.query;
-  const { user } = useRequireAuth();
-  const [grievance, setGrievance] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
+  const { user, loading: authLoading } = useRequireAuth();
+  const [actionError, setActionError] = useState("");
   const [actionSubmitting, setActionSubmitting] = useState(false);
   const [feedbackRating, setFeedbackRating] = useState(5);
   const [feedbackComment, setFeedbackComment] = useState("");
@@ -29,35 +31,56 @@ const GrievanceDetailPage = () => {
   const [statusComment, setStatusComment] = useState("");
   const [previewAttachment, setPreviewAttachment] = useState(null);
 
-  const loadGrievance = async () => {
-    if (!id) return;
-    setLoading(true);
-    setError("");
-    try {
-      const response = await apiFetch(`/api/grievances/${id}`);
-      setGrievance(response.grievance);
-    } catch (err) {
-      setError(err.message || "Failed to load grievance");
-    } finally {
-      setLoading(false);
-    }
-  };
+  const canFetch = Boolean(id) && !authLoading && Boolean(user);
+
+  const {
+    data,
+    error: grievanceError,
+    isLoading: grievanceLoading,
+    isValidating: grievanceValidating,
+    mutate,
+  } = useSWR(canFetch ? `/api/grievances/${id}` : null);
+
+  const grievance = data?.grievance || null;
+  const isLoading = authLoading || grievanceLoading;
+  const error = actionError || grievanceError?.message || "";
 
   useEffect(() => {
-    loadGrievance();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [id]);
+    if (!canFetch) {
+      return undefined;
+    }
+
+    const grievanceRef = doc(firestore, "grievances", id);
+    const unsubscribe = onSnapshot(
+      grievanceRef,
+      (snapshot) => {
+        if (!snapshot.exists()) {
+          mutate({ grievance: null }, { revalidate: false });
+          return;
+        }
+        mutate({ grievance: serializeDocument(snapshot) }, { revalidate: false });
+      },
+      (listenerError) => {
+        console.error("Grievance listener error", listenerError);
+      }
+    );
+
+    return () => {
+      unsubscribe();
+    };
+  }, [canFetch, id, mutate]);
 
   const handleComment = async (comment) => {
     setActionSubmitting(true);
+    setActionError("");
     try {
       await apiFetch(`/api/grievances/${id}`, {
         method: "PATCH",
         body: { action: "comment", comment },
       });
-      await loadGrievance();
+      await mutate();
     } catch (err) {
-      setError(err.message || "Failed to post comment");
+      setActionError(err.message || "Failed to post comment");
     } finally {
       setActionSubmitting(false);
     }
@@ -65,14 +88,15 @@ const GrievanceDetailPage = () => {
 
   const handleAssignment = async (assignedTo) => {
     setActionSubmitting(true);
+    setActionError("");
     try {
       await apiFetch(`/api/grievances/${id}`, {
         method: "PATCH",
         body: { action: "assign", assignedTo },
       });
-      await loadGrievance();
+      await mutate();
     } catch (err) {
-      setError(err.message || "Failed to update assignment");
+      setActionError(err.message || "Failed to update assignment");
     } finally {
       setActionSubmitting(false);
     }
@@ -80,17 +104,18 @@ const GrievanceDetailPage = () => {
 
   const handleStatusUpdate = async (status, comment) => {
     setActionSubmitting(true);
+    setActionError("");
     try {
       await apiFetch(`/api/grievances/${id}`, {
         method: "PATCH",
         body: { action: "status", status, comment },
       });
-      await loadGrievance();
+      await mutate();
       if (comment) {
         setStatusComment("");
       }
     } catch (err) {
-      setError(err.message || "Failed to update status");
+      setActionError(err.message || "Failed to update status");
     } finally {
       setActionSubmitting(false);
     }
@@ -98,14 +123,15 @@ const GrievanceDetailPage = () => {
 
   const handleFeedback = async ({ rating, comment }) => {
     setActionSubmitting(true);
+    setActionError("");
     try {
       await apiFetch(`/api/grievances/${id}`, {
         method: "PATCH",
         body: { action: "feedback", rating, comment },
       });
-      await loadGrievance();
+      await mutate();
     } catch (err) {
-      setError(err.message || "Failed to submit feedback");
+      setActionError(err.message || "Failed to submit feedback");
     } finally {
       setActionSubmitting(false);
     }
@@ -271,7 +297,7 @@ const GrievanceDetailPage = () => {
     );
   };
 
-  if (loading) {
+  if (isLoading) {
     return (
       <Layout>
         <div className="mx-auto mt-16 h-40 w-full max-w-3xl rounded-3xl border border-dashed border-[rgba(168,85,247,0.4)] bg-[#11051b] shadow-[0_0_2.5rem_rgba(168,85,247,0.2)]" />

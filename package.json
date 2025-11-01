@@ -8,14 +8,16 @@
     "start": "next start"
   },
   "dependencies": {
+    "clsx": "^2.1.1",
     "cookie": "^1.0.2",
     "firebase": "^11.0.2",
     "firebase-admin": "^12.6.0",
     "formidable": "^3.5.2",
-    "nodemailer": "^6.9.15",
     "next": "15.5.4",
+    "nodemailer": "^6.9.15",
     "react": "19.1.0",
-    "react-dom": "19.1.0"
+    "react-dom": "19.1.0",
+    "swr": "^2.3.6"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",

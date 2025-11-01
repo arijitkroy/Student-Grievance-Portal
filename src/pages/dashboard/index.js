@@ -1,4 +1,5 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
+import useSWR from "swr";
 import Head from "next/head";
 import Layout from "@/components/Layout";
 import DashboardStats from "@/components/DashboardStats";
@@ -14,10 +15,45 @@ const DashboardPage = () => {
   const { notifications, loading: notificationsLoading, markAllRead } = useNotifications();
 
   const [filters, setFilters] = useState({ status: "", category: "", assignedTo: "" });
-  const [grievances, setGrievances] = useState([]);
-  const [stats, setStats] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
+  const canFetch = !authLoading && Boolean(user);
+
+  const grievancesQuery = useMemo(() => {
+    if (!user) return "";
+    return buildQueryString({
+      status: filters.status,
+      category: filters.category,
+      assignedTo: filters.assignedTo || undefined,
+      includeAnonymous: user?.role === "admin" ? "true" : undefined,
+    });
+  }, [filters.assignedTo, filters.category, filters.status, user]);
+
+  const {
+    data: grievancesData,
+    error: grievancesError,
+    isLoading: grievancesLoading,
+    isValidating: grievancesValidating,
+    mutate: mutateGrievances,
+  } = useSWR(canFetch ? `/api/grievances${grievancesQuery}` : null);
+
+  const {
+    data: statsData,
+    error: statsError,
+    isLoading: statsLoading,
+    isValidating: statsValidating,
+    mutate: mutateStats,
+  } = useSWR(canFetch ? `/api/grievances/stats` : null);
+
+  const grievances = grievancesData?.grievances || [];
+  const stats = statsData?.stats || null;
+  const error = grievancesError?.message || statsError?.message || "";
+  const isLoading = authLoading || grievancesLoading || statsLoading;
+  const isRefreshing = grievancesValidating || statsValidating;
+
+  const handleRefresh = () => {
+    if (!canFetch) return;
+    mutateGrievances();
+    mutateStats();
+  };
 
   const filterOptions = useMemo(
     () => ({
@@ -32,59 +68,6 @@ const DashboardPage = () => {
     }),
     []
   );
-
-  const loadData = useCallback(
-    async ({ guard } = {}) => {
-      if (!user) return;
-
-      const isActive = () => !guard || guard.current;
-
-      if (isActive()) {
-        setLoading(true);
-        setError("");
-      }
-
-      try {
-        const query = buildQueryString({
-          status: filters.status,
-          category: filters.category,
-          assignedTo: filters.assignedTo || undefined,
-          includeAnonymous: user?.role === "admin" ? "true" : undefined,
-        });
-
-        const statsPromise = apiFetch(`/api/grievances/stats`);
-        const grievancesRes = await apiFetch(`/api/grievances${query}`);
-
-        if (!isActive()) return;
-
-        setGrievances(grievancesRes.grievances || []);
-
-        const statsRes = await statsPromise;
-
-        if (!isActive()) return;
-
-        setStats(statsRes.stats || null);
-      } catch (err) {
-        if (!isActive()) return;
-        setError(err.message || "Failed to load dashboard data");
-      } finally {
-        if (!isActive()) return;
-        setLoading(false);
-      }
-    },
-    [filters.assignedTo, filters.category, filters.status, user]
-  );
-
-  useEffect(() => {
-    if (authLoading || !user) return;
-
-    const guard = { current: true };
-    loadData({ guard });
-
-    return () => {
-      guard.current = false;
-    };
-  }, [authLoading, user, loadData]);
 
   const handleFilterChange = (event) => {
     const { name, value } = event.target;
@@ -121,9 +104,9 @@ const DashboardPage = () => {
             <div className="flex items-center gap-3">
               <button
                 type="button"
-                onClick={loadData}
+                onClick={handleRefresh}
                 className="rounded-full border border-[var(--accent-primary)] bg-[var(--accent-primary)] px-4 py-2 text-sm font-semibold text-[#1a0b27] shadow-[0_0_2rem_rgba(255,123,51,0.35)] transition hover:-translate-y-1 hover:bg-[#ff965f] disabled:cursor-not-allowed disabled:border-[#6c3924] disabled:bg-[#6c3924] disabled:text-[#2e0f1f]"
-                disabled={loading}
+                disabled={isLoading || isRefreshing || !canFetch}
               >
                 Refresh
               </button>
@@ -189,7 +172,7 @@ const DashboardPage = () => {
                 </div>
               </div>
               <div className="mt-6">
-                {loading ? (
+                {isLoading ? (
                   <div className="h-32 rounded-xl border border-dashed border-white/15 bg-white/5" />
                 ) : (
                   <GrievanceList grievances={grievances} />
